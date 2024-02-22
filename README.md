@@ -1,1 +1,1 @@
-# MaifestoGroup
+# ManifestoGroup
