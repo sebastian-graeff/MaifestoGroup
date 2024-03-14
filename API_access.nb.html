@@ -1760,16 +1760,66 @@ the chunk or by placing your cursor inside it and pressing
 <em>Ctrl+Shift+Enter</em>.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShtYW5pZmVzdG9SKVxubGlicmFyeSh0b2tlbml6ZXJzKVxubGlicmFyeShOTFApXG5saWJyYXJ5KHRleHRzdGVtKVxubGlicmFyeSh0ZXh0ZGF0YSlcbmxpYnJhcnkodGlkeXRleHQpXG5saWJyYXJ5KHNlbnRpbWVudHIpXG5saWJyYXJ5KGRwbHlyKVxubGlicmFyeSh0aWR5cilcbmBgYCJ9 -->
-<pre class="r"><code>library(manifestoR)
-library(tokenizers)
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShtYW5pZmVzdG9SKVxuYGBgIn0= -->
+<pre class="r"><code>library(manifestoR)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiTG9hZGluZyByZXF1aXJlZCBwYWNrYWdlOiBOTFBcbkxvYWRpbmcgcmVxdWlyZWQgcGFja2FnZTogdG1cblJlZ2lzdGVyZWQgUzMgbWV0aG9kIG92ZXJ3cml0dGVuIGJ5ICdodG1sd2lkZ2V0cyc6XG4gIG1ldGhvZCAgICAgICAgICAgZnJvbSAgICAgICAgIFxuICBwcmludC5odG1sd2lkZ2V0IHRvb2xzOnJzdHVkaW9cbldoZW4gcHVibGlzaGluZyB3b3JrIHVzaW5nIHRoZSBNYW5pZmVzdG8gQ29ycHVzLCBwbGVhc2UgbWFrZSBzdXJlIHRvIGNpdGUgaXQgY29ycmVjdGx5IGFuZCB0byBnaXZlIHRoZSBpZGVudGlmaWNhdGlvbiBudW1iZXIgb2YgdGhlIGNvcnB1cyB2ZXJzaW9uIHVzZWQgZm9yIHlvdXIgYW5hbHlzaXMuXG5cbllvdSBjYW4gcHJpbnQgY2l0YXRpb24gYW5kIHZlcnNpb24gaW5mb3JtYXRpb24gd2l0aCB0aGUgZnVuY3Rpb24gbXBfY2l0ZSgpLlxuXG5Ob3RlIHRoYXQgc29tZSBvZiB0aGUgc2NhbGluZy9hbmFseXNpcyBhbGdvcml0aG1zIHByb3ZpZGVkIHdpdGggdGhpcyBwYWNrYWdlIHdlcmUgY29uY2VwdHVhbGx5IGRldmVsb3BlZCBieSBhdXRob3JzIHJlZmVyZW5jZWQgaW4gdGhlIHJlc3BlY3RpdmUgZnVuY3Rpb24gZG9jdW1lbnRhdGlvbi4gUGxlYXNlIGFsc28gcmVmZXJlbmNlIHRoZW0gd2hlbiB1c2luZyB0aGVzZSBhbGdvcml0aG1zLlxuIn0= -->
+<pre><code>Loading required package: NLP
+Loading required package: tm
+Registered S3 method overwritten by &#39;htmlwidgets&#39;:
+  method           from         
+  print.htmlwidget tools:rstudio
+When publishing work using the Manifesto Corpus, please make sure to cite it correctly and to give the identification number of the corpus version used for your analysis.
+
+You can print citation and version information with the function mp_cite().
+
+Note that some of the scaling/analysis algorithms provided with this package were conceptually developed by authors referenced in the respective function documentation. Please also reference them when using these algorithms.</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeSh0b2tlbml6ZXJzKVxubGlicmFyeShOTFApXG5saWJyYXJ5KHRleHRzdGVtKVxuYGBgIn0= -->
+<pre class="r"><code>library(tokenizers)
 library(NLP)
-library(textstem)
-library(textdata)
+library(textstem)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiTG9hZGluZyByZXF1aXJlZCBwYWNrYWdlOiBrb1JwdXMubGFuZy5lblxuTG9hZGluZyByZXF1aXJlZCBwYWNrYWdlOiBrb1JwdXNcbkxvYWRpbmcgcmVxdWlyZWQgcGFja2FnZTogc3lsbHlcblJlZ2lzdGVyZWQgUzMgbWV0aG9kIG92ZXJ3cml0dGVuIGJ5ICdkYXRhLnRhYmxlJzpcbiAgbWV0aG9kICAgICAgICAgICBmcm9tXG4gIHByaW50LmRhdGEudGFibGUgICAgIFxuRm9yIGluZm9ybWF0aW9uIG9uIGF2YWlsYWJsZSBsYW5ndWFnZSBwYWNrYWdlcyBmb3IgJ2tvUnB1cycsIHJ1blxuXG4gIGF2YWlsYWJsZS5rb1JwdXMubGFuZygpXG5cbmFuZCBzZWUgP2luc3RhbGwua29ScHVzLmxhbmcoKVxuXG5cbkF0dGFjaGluZyBwYWNrYWdlOiDigJhrb1JwdXPigJlcblxuVGhlIGZvbGxvd2luZyBvYmplY3QgaXMgbWFza2VkIGZyb20g4oCYcGFja2FnZTp0beKAmTpcblxuICAgIHJlYWRUYWdnZWRcbiJ9 -->
+<pre><code>Loading required package: koRpus.lang.en
+Loading required package: koRpus
+Loading required package: sylly
+Registered S3 method overwritten by &#39;data.table&#39;:
+  method           from
+  print.data.table     
+For information on available language packages for &#39;koRpus&#39;, run
+
+  available.koRpus.lang()
+
+and see ?install.koRpus.lang()
+
+
+Attaching package: ‘koRpus’
+
+The following object is masked from ‘package:tm’:
+
+    readTagged</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeSh0ZXh0ZGF0YSlcbmxpYnJhcnkodGlkeXRleHQpXG5saWJyYXJ5KHNlbnRpbWVudHIpXG5saWJyYXJ5KGRwbHlyKVxuYGBgIn0= -->
+<pre class="r"><code>library(textdata)
 library(tidytext)
 library(sentimentr)
-library(dplyr)
-library(tidyr)</code></pre>
+library(dplyr)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiXG5BdHRhY2hpbmcgcGFja2FnZTog4oCYZHBseXLigJlcblxuVGhlIGZvbGxvd2luZyBvYmplY3RzIGFyZSBtYXNrZWQgZnJvbSDigJhwYWNrYWdlOnN0YXRz4oCZOlxuXG4gICAgZmlsdGVyLCBsYWdcblxuVGhlIGZvbGxvd2luZyBvYmplY3RzIGFyZSBtYXNrZWQgZnJvbSDigJhwYWNrYWdlOmJhc2XigJk6XG5cbiAgICBpbnRlcnNlY3QsIHNldGRpZmYsIHNldGVxdWFsLCB1bmlvblxuIn0= -->
+<pre><code>
+Attaching package: ‘dplyr’
+
+The following objects are masked from ‘package:stats’:
+
+    filter, lag
+
+The following objects are masked from ‘package:base’:
+
+    intersect, setdiff, setequal, union</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeSh0aWR5cilcbmBgYCJ9 -->
+<pre class="r"><code>library(tidyr)</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -1827,167 +1877,47 @@ Manifesto 12 Party Name: 34720
 Manifesto 13 Party Name: 34730 </code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBMb2FkIG1hbmlmZXN0b1IgcGFja2FnZVxubGlicmFyeShtYW5pZmVzdG9SKVxuXG4jIFNldCBBUEkga2V5XG5tcF9zZXRhcGlrZXkoXCJtYW5pZmVzdG9fYXBpa2V5LnR4dFwiKSAgIyBSZXBsYWNlIFwibWFuaWZlc3RvX2FwaWtleS50eHRcIiB3aXRoIHlvdXIgYWN0dWFsIEFQSSBrZXkgZmlsZSBuYW1lXG5cbiMgRG93bmxvYWQgZG9jdW1lbnRzIGZvciBHcmVlY2UgaW4gMjAxNVxubXlfY29ycHVzIDwtIG1wX2NvcnB1cyhjb3VudHJ5bmFtZSA9PSBcIkdyZWVjZVwiICYgZWRhdGUgPj0gYXMuRGF0ZShcIjIwMTUtMDEtMDFcIikgJiBlZGF0ZSA8IGFzLkRhdGUoXCIyMDE2LTAxLTAxXCIpKVxuXG4jIENoZWNrIGlmIGFueSBtYW5pZmVzdG9zIGV4aXN0IGZvciBHcmVlY2VcbmlmIChsZW5ndGgobXlfY29ycHVzKSA+IDApIHtcbiAgIyBDcmVhdGUgZGlyZWN0b3J5IGZvciBHcmVlY2UgaWYgaXQgZG9lc24ndCBleGlzdFxuICBkaXIuY3JlYXRlKFwiR3JlZWNlXCIsIHNob3dXYXJuaW5ncyA9IEZBTFNFLCByZWN1cnNpdmUgPSBUUlVFKVxuICBcbiAgIyBJdGVyYXRlIG92ZXIgZWFjaCBkb2N1bWVudCBpbiB0aGUgY29ycHVzXG4gIGZvciAoaSBpbiAxOmxlbmd0aChteV9jb3JwdXMpKSB7XG4gICAgIyBFeHRyYWN0IHBhcnR5IG5hbWUgZnJvbSB0aGUgbWV0YWRhdGFcbiAgICBwYXJ0eV9uYW1lIDwtIG1ldGEobXlfY29ycHVzW1tpXV0pJHBhcnR5XG4gICAgXG4gICAgIyBDb3VudCB0aGUgb2NjdXJyZW5jZXMgb2YgdGhlIHBhcnR5IG5hbWUgaW4gcHJldmlvdXNseSBwcm9jZXNzZWQgZG9jdW1lbnRzXG4gICAgcGFydHlfY291bnQgPC0gc3VtKHN1YnN0cihwYXJ0eV9uYW1lcywgMSwgbmNoYXIocGFydHlfbmFtZSkpID09IHBhcnR5X25hbWUpXG4gICAgXG4gICAgIyBHZW5lcmF0ZSBmaWxlIG5hbWVcbiAgICBpZiAocGFydHlfY291bnQgPiAxKSB7XG4gICAgICBmaWxlX25hbWUgPC0gcGFzdGUwKHBhcnR5X25hbWUsIFwiX1wiLCBwYXJ0eV9jb3VudClcbiAgICB9IGVsc2Uge1xuICAgICAgZmlsZV9uYW1lIDwtIHBhcnR5X25hbWVcbiAgICB9XG4gICAgXG4gICAgIyBXcml0ZSBtYW5pZmVzdG8gY29udGVudCB0byBmaWxlXG4gICAgd3JpdGVMaW5lcyhjb250ZW50KG15X2NvcnB1c1tbaV1dKSwgZmlsZS5wYXRoKFwiR3JlZWNlXCIsIHBhc3RlMChmaWxlX25hbWUsIFwiLnR4dFwiKSkpXG4gIH1cbiAgXG4gIGNhdChcIk1hbmlmZXN0b3MgZm9yIEdyZWVjZSBoYXZlIGJlZW4gc2F2ZWQuXFxuXCIpXG59IGVsc2Uge1xuICBjYXQoXCJObyBtYW5pZmVzdG9zIGZvdW5kIGZvciBHcmVlY2UgaW4gMjAxNS5cXG5cIilcbn1cbmBgYCJ9 -->
-<pre class="r"><code># Load manifestoR package
-library(manifestoR)
-
-# Set API key
-mp_setapikey(&quot;manifesto_apikey.txt&quot;)  # Replace &quot;manifesto_apikey.txt&quot; with your actual API key file name
-
-# Download documents for Greece in 2015
-my_corpus &lt;- mp_corpus(countryname == &quot;Greece&quot; &amp; edate &gt;= as.Date(&quot;2015-01-01&quot;) &amp; edate &lt; as.Date(&quot;2016-01-01&quot;))
-
-# Check if any manifestos exist for Greece
-if (length(my_corpus) &gt; 0) {
-  # Create directory for Greece if it doesn&#39;t exist
-  dir.create(&quot;Greece&quot;, showWarnings = FALSE, recursive = TRUE)
-  
-  # Iterate over each document in the corpus
-  for (i in 1:length(my_corpus)) {
-    # Extract party name from the metadata
-    party_name &lt;- meta(my_corpus[[i]])$party
-    
-    # Count the occurrences of the party name in previously processed documents
-    party_count &lt;- sum(substr(party_names, 1, nchar(party_name)) == party_name)
-    
-    # Generate file name
-    if (party_count &gt; 1) {
-      file_name &lt;- paste0(party_name, &quot;_&quot;, party_count)
-    } else {
-      file_name &lt;- party_name
-    }
-    
-    # Write manifesto content to file
-    writeLines(content(my_corpus[[i]]), file.path(&quot;Greece&quot;, paste0(file_name, &quot;.txt&quot;)))
-  }
-  
-  cat(&quot;Manifestos for Greece have been saved.\n&quot;)
-} else {
-  cat(&quot;No manifestos found for Greece in 2015.\n&quot;)
-}</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiTWFuaWZlc3RvcyBmb3IgR3JlZWNlIGhhdmUgYmVlbiBzYXZlZC5cbiJ9 -->
-<pre><code>Manifestos for Greece have been saved.</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
+<p>This below is the working code to get moanifestos and add them to a
+directory with the party ID</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBMb2FkIG1hbmlmZXN0b1IgcGFja2FnZVxubGlicmFyeShtYW5pZmVzdG9SKVxuXG4jIFNldCBBUEkga2V5XG5tcF9zZXRhcGlrZXkoXCJtYW5pZmVzdG9fYXBpa2V5LnR4dFwiKSAgXG5cbiMgRG93bmxvYWQgZG9jdW1lbnRzIGZvciBHcmVlY2UgaW4gMjAxNVxubXlfY29ycHVzIDwtIG1wX2NvcnB1cyhjb3VudHJ5bmFtZSA9PSBcIkdyZWVjZVwiICYgZWRhdGUgPj0gYXMuRGF0ZShcIjIwMTUtMDEtMDFcIikgJiBlZGF0ZSA8IGFzLkRhdGUoXCIyMDE2LTAxLTAxXCIpKVxuXG4jIENoZWNrIGlmIGFueSBtYW5pZmVzdG9zIGV4aXN0IGZvciBHcmVlY2VcbmlmIChsZW5ndGgobXlfY29ycHVzKSA+IDApIHtcbiAgIyBDcmVhdGUgZGlyZWN0b3J5IGZvciBHcmVlY2UgaWYgaXQgZG9lc24ndCBleGlzdFxuICBpZiAoIWRpci5leGlzdHMoXCJHcmVlY2VcIikpIGRpci5jcmVhdGUoXCJHcmVlY2VcIilcbiAgXG4gICMgU2F2ZSBtYW5pZmVzdG9zXG4gIGZvciAoaSBpbiAxOmxlbmd0aChteV9jb3JwdXMpKSB7XG4gICAgcGFydHlfbmFtZSA8LSBtZXRhKG15X2NvcnB1c1tbaV1dKSRwYXJ0eVxuICAgIHBhcnR5X2NvdW50IDwtIHN1bShzdWJzdHIocGFydHlfbmFtZXMsIDEsIG5jaGFyKHBhcnR5X25hbWUpKSA9PSBwYXJ0eV9uYW1lKVxuICAgIGZpbGVfbmFtZSA8LSBpZmVsc2UocGFydHlfY291bnQgPiAxLCBwYXN0ZTAocGFydHlfbmFtZSwgXCJfXCIsIHBhcnR5X2NvdW50KSwgcGFydHlfbmFtZSlcbiAgICB3cml0ZUxpbmVzKGNvbnRlbnQobXlfY29ycHVzW1tpXV0pLCBmaWxlLnBhdGgoXCJHcmVlY2VcIiwgcGFzdGUwKGZpbGVfbmFtZSwgXCIudHh0XCIpKSlcbiAgfVxuICBjYXQoXCJNYW5pZmVzdG9zIGZvciBHcmVlY2UgaGF2ZSBiZWVuIHNhdmVkLlxcblwiKVxufSBlbHNlIHtcbiAgY2F0KFwiTm8gbWFuaWZlc3RvcyBmb3VuZCBmb3IgR3JlZWNlIGluIDIwMTUuXFxuXCIpXG59XG5gYGAifQ== -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBMb2FkIG1hbmlmZXN0b1IgcGFja2FnZVxubGlicmFyeShtYW5pZmVzdG9SKVxuXG4jIFNldCBBUEkga2V5XG5tcF9zZXRhcGlrZXkoXCJtYW5pZmVzdG9fYXBpa2V5LnR4dFwiKSAgXG5cbiMgRG93bmxvYWQgZG9jdW1lbnRzIGZvciBBemVyYmFpamFuIGluIDIwMTVcbm15X2NvcnB1cyA8LSBtcF9jb3JwdXMoY291bnRyeW5hbWUgPT0gXCJBemVyYmFpamFuXCIgJiBlZGF0ZSA+PSBhcy5EYXRlKFwiMjAxNS0wMS0wMVwiKSAmIGVkYXRlIDwgYXMuRGF0ZShcIjIwMTYtMDEtMDFcIikpXG5cbiMgQ2hlY2sgaWYgYW55IG1hbmlmZXN0b3MgZXhpc3QgZm9yIEF6ZXJiYWlqYW5cbmlmIChsZW5ndGgobXlfY29ycHVzKSA+IDApIHtcbiAgIyBDcmVhdGUgZGlyZWN0b3J5IGZvciBBemVyYmFpamFuIGlmIGl0IGRvZXNuJ3QgZXhpc3RcbiAgaWYgKCFkaXIuZXhpc3RzKFwiQXplcmJhaWphblwiKSkgZGlyLmNyZWF0ZShcIkF6ZXJiYWlqYW5cIilcbiAgXG4gICMgU2F2ZSBtYW5pZmVzdG9zXG4gIGZvciAoaSBpbiAxOmxlbmd0aChteV9jb3JwdXMpKSB7XG4gICAgcGFydHlfbmFtZSA8LSBtZXRhKG15X2NvcnB1c1tbaV1dKSRwYXJ0eVxuICAgIHBhcnR5X2NvdW50IDwtIHN1bShzdWJzdHIocGFydHlfbmFtZXMsIDEsIG5jaGFyKHBhcnR5X25hbWUpKSA9PSBwYXJ0eV9uYW1lKVxuICAgIGZpbGVfbmFtZSA8LSBpZmVsc2UocGFydHlfY291bnQgPiAxLCBwYXN0ZTAocGFydHlfbmFtZSwgXCJfXCIsIHBhcnR5X2NvdW50KSwgcGFydHlfbmFtZSlcbiAgICB3cml0ZUxpbmVzKGNvbnRlbnQobXlfY29ycHVzW1tpXV0pLCBmaWxlLnBhdGgoXCJBemVyYmFpamFuXCIsIHBhc3RlMChmaWxlX25hbWUsIFwiLnR4dFwiKSkpXG4gIH1cbiAgY2F0KFwiTWFuaWZlc3RvcyBmb3IgQXplcmJhaWphbiBoYXZlIGJlZW4gc2F2ZWQuXFxuXCIpXG59IGVsc2Uge1xuICBjYXQoXCJObyBtYW5pZmVzdG9zIGZvdW5kIGZvciBBemVyYmFpamFuIGluIDIwMTUuXFxuXCIpXG59XG5cbmBgYCJ9 -->
 <pre class="r"><code># Load manifestoR package
 library(manifestoR)
 
 # Set API key
 mp_setapikey(&quot;manifesto_apikey.txt&quot;)  
 
-# Download documents for Greece in 2015
-my_corpus &lt;- mp_corpus(countryname == &quot;Greece&quot; &amp; edate &gt;= as.Date(&quot;2015-01-01&quot;) &amp; edate &lt; as.Date(&quot;2016-01-01&quot;))
+# Download documents for Azerbaijan in 2015
+my_corpus &lt;- mp_corpus(countryname == &quot;Azerbaijan&quot; &amp; edate &gt;= as.Date(&quot;2015-01-01&quot;) &amp; edate &lt; as.Date(&quot;2016-01-01&quot;))
 
-# Check if any manifestos exist for Greece
+# Check if any manifestos exist for Azerbaijan
 if (length(my_corpus) &gt; 0) {
-  # Create directory for Greece if it doesn&#39;t exist
-  if (!dir.exists(&quot;Greece&quot;)) dir.create(&quot;Greece&quot;)
+  # Create directory for Azerbaijan if it doesn&#39;t exist
+  if (!dir.exists(&quot;Azerbaijan&quot;)) dir.create(&quot;Azerbaijan&quot;)
   
   # Save manifestos
   for (i in 1:length(my_corpus)) {
     party_name &lt;- meta(my_corpus[[i]])$party
     party_count &lt;- sum(substr(party_names, 1, nchar(party_name)) == party_name)
     file_name &lt;- ifelse(party_count &gt; 1, paste0(party_name, &quot;_&quot;, party_count), party_name)
-    writeLines(content(my_corpus[[i]]), file.path(&quot;Greece&quot;, paste0(file_name, &quot;.txt&quot;)))
+    writeLines(content(my_corpus[[i]]), file.path(&quot;Azerbaijan&quot;, paste0(file_name, &quot;.txt&quot;)))
   }
-  cat(&quot;Manifestos for Greece have been saved.\n&quot;)
+  cat(&quot;Manifestos for Azerbaijan have been saved.\n&quot;)
 } else {
-  cat(&quot;No manifestos found for Greece in 2015.\n&quot;)
-}</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiTWFuaWZlc3RvcyBmb3IgR3JlZWNlIGhhdmUgYmVlbiBzYXZlZC5cbiJ9 -->
-<pre><code>Manifestos for Greece have been saved.</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBMb2FkIG1hbmlmZXN0b1IgcGFja2FnZVxubGlicmFyeShtYW5pZmVzdG9SKVxuXG4jIFNldCBBUEkga2V5XG5tcF9zZXRhcGlrZXkoXCJtYW5pZmVzdG9fYXBpa2V5LnR4dFwiKSAgIyBSZXBsYWNlIFwibWFuaWZlc3RvX2FwaWtleS50eHRcIiB3aXRoIHlvdXIgYWN0dWFsIEFQSSBrZXkgZmlsZSBuYW1lXG5cbiMgRGVmaW5lIGZ1bmN0aW9uIHRvIHNhdmUgbWFuaWZlc3RvcyBmb3IgYSBnaXZlbiBjb3VudHJ5XG5zYXZlX21hbmlmZXN0b3MgPC0gZnVuY3Rpb24oY291bnRyeSkge1xuICAjIERvd25sb2FkIGRvY3VtZW50cyBmb3IgdGhlIHNwZWNpZmllZCBjb3VudHJ5IGluIDIwMTVcbiAgY291bnRyeV9jb3JwdXMgPC0gbXBfY29ycHVzKGNvdW50cnluYW1lID09IGNvdW50cnkgJiBlZGF0ZSA+PSBhcy5EYXRlKFwiMjAxNS0wMS0wMVwiKSAmIGVkYXRlIDw9IGFzLkRhdGUoXCIyMDE1LTEyLTMxXCIpKVxuICBcbiAgIyBDaGVjayBpZiBhbnkgbWFuaWZlc3RvcyBleGlzdCBmb3IgdGhlIGNvdW50cnlcbiAgaWYgKGxlbmd0aChjb3VudHJ5X2NvcnB1cykgPiAwKSB7XG4gICAgY2F0KFwiTWFuaWZlc3RvcyBmb3VuZCBmb3JcIiwgY291bnRyeSwgXCJcXG5cIilcbiAgICBcbiAgICAjIENyZWF0ZSBkaXJlY3RvcnkgZm9yIHRoZSBjb3VudHJ5IGlmIGl0IGRvZXNuJ3QgZXhpc3RcbiAgICBkaXIuY3JlYXRlKGNvdW50cnksIHNob3dXYXJuaW5ncyA9IFRSVUUsIHJlY3Vyc2l2ZSA9IFRSVUUpXG4gICAgXG4gICAgIyBDaGVjayBpZiBkaXJlY3Rvcnkgd2FzIGNyZWF0ZWRcbiAgICBpZiAoZmlsZS5leGlzdHMoY291bnRyeSkpIHtcbiAgICAgIGNhdChcIkRpcmVjdG9yeSBjcmVhdGVkIGZvclwiLCBjb3VudHJ5LCBcIlxcblwiKVxuICAgIH0gZWxzZSB7XG4gICAgICBjYXQoXCJGYWlsZWQgdG8gY3JlYXRlIGRpcmVjdG9yeSBmb3JcIiwgY291bnRyeSwgXCJcXG5cIilcbiAgICB9XG4gICAgXG4gICAgIyBJdGVyYXRlIG92ZXIgZWFjaCBkb2N1bWVudCBpbiB0aGUgY29ycHVzXG4gICAgZm9yIChpIGluIDE6bGVuZ3RoKGNvdW50cnlfY29ycHVzKSkge1xuICAgICAgIyBFeHRyYWN0IHBhcnR5IG5hbWUgZnJvbSB0aGUgbWV0YWRhdGFcbiAgICAgIHBhcnR5X25hbWUgPC0gbWV0YShjb3VudHJ5X2NvcnB1c1tbaV1dKSRwYXJ0eVxuICAgICAgXG4gICAgICAjIENvdW50IHRoZSBvY2N1cnJlbmNlcyBvZiB0aGUgcGFydHkgbmFtZSBpbiBwcmV2aW91c2x5IHByb2Nlc3NlZCBkb2N1bWVudHNcbiAgICAgIHBhcnR5X2NvdW50IDwtIHN1bShzdWJzdHIocGFydHlfbmFtZXMsIDEsIG5jaGFyKHBhcnR5X25hbWUpKSA9PSBwYXJ0eV9uYW1lKVxuICAgICAgXG4gICAgICAjIEdlbmVyYXRlIGZpbGUgbmFtZVxuICAgICAgaWYgKHBhcnR5X2NvdW50ID4gMSkge1xuICAgICAgICBmaWxlX25hbWUgPC0gcGFzdGUwKHBhcnR5X25hbWUsIFwiX1wiLCBwYXJ0eV9jb3VudClcbiAgICAgIH0gZWxzZSB7XG4gICAgICAgIGZpbGVfbmFtZSA8LSBwYXJ0eV9uYW1lXG4gICAgICB9XG4gICAgICBcbiAgICAgICMgV3JpdGUgbWFuaWZlc3RvIGNvbnRlbnQgdG8gZmlsZVxuICAgICAgd3JpdGVMaW5lcyhjb250ZW50KGNvdW50cnlfY29ycHVzW1tpXV0pLCBmaWxlLnBhdGgoY291bnRyeSwgcGFzdGUwKGZpbGVfbmFtZSwgXCIudHh0XCIpKSlcbiAgICB9XG4gICAgXG4gICAgY2F0KFwiTWFuaWZlc3RvcyBmb3JcIiwgY291bnRyeSwgXCJoYXZlIGJlZW4gc2F2ZWQuXFxuXCIpXG4gIH0gZWxzZSB7XG4gICAgY2F0KFwiTm8gbWFuaWZlc3RvcyBmb3VuZCBmb3JcIiwgY291bnRyeSwgXCJpbiAyMDE1LlxcblwiKVxuICB9XG59XG5cbiMgTGlzdCBvZiBCYWxrYW4gY291bnRyaWVzIGFuZCBUdXJrZXlcbmNvdW50cmllcyA8LSBjKFwiQWxiYW5pYVwiLCBcIkJvc25pYSBhbmQgSGVyemVnb3ZpbmFcIiwgXCJCdWxnYXJpYVwiLCBcIkNyb2F0aWFcIiwgXCJLb3Nvdm9cIiwgXCJNb250ZW5lZ3JvXCIsIFwiTm9ydGggTWFjZWRvbmlhXCIsIFwiUm9tYW5pYVwiLCBcIlNlcmJpYVwiLCBcIlNsb3ZlbmlhXCIsIFwiVHVya2V5XCIpXG5cbiMgTG9vcCB0aHJvdWdoIGVhY2ggY291bnRyeSBhbmQgc2F2ZSBtYW5pZmVzdG9zXG5mb3IgKGNvdW50cnkgaW4gY291bnRyaWVzKSB7XG4gIHNhdmVfbWFuaWZlc3Rvcyhjb3VudHJ5KVxufVxuYGBgIn0= -->
-<pre class="r"><code># Load manifestoR package
-library(manifestoR)
-
-# Set API key
-mp_setapikey(&quot;manifesto_apikey.txt&quot;)  # Replace &quot;manifesto_apikey.txt&quot; with your actual API key file name
-
-# Define function to save manifestos for a given country
-save_manifestos &lt;- function(country) {
-  # Download documents for the specified country in 2015
-  country_corpus &lt;- mp_corpus(countryname == country &amp; edate &gt;= as.Date(&quot;2015-01-01&quot;) &amp; edate &lt;= as.Date(&quot;2015-12-31&quot;))
-  
-  # Check if any manifestos exist for the country
-  if (length(country_corpus) &gt; 0) {
-    cat(&quot;Manifestos found for&quot;, country, &quot;\n&quot;)
-    
-    # Create directory for the country if it doesn&#39;t exist
-    dir.create(country, showWarnings = TRUE, recursive = TRUE)
-    
-    # Check if directory was created
-    if (file.exists(country)) {
-      cat(&quot;Directory created for&quot;, country, &quot;\n&quot;)
-    } else {
-      cat(&quot;Failed to create directory for&quot;, country, &quot;\n&quot;)
-    }
-    
-    # Iterate over each document in the corpus
-    for (i in 1:length(country_corpus)) {
-      # Extract party name from the metadata
-      party_name &lt;- meta(country_corpus[[i]])$party
-      
-      # Count the occurrences of the party name in previously processed documents
-      party_count &lt;- sum(substr(party_names, 1, nchar(party_name)) == party_name)
-      
-      # Generate file name
-      if (party_count &gt; 1) {
-        file_name &lt;- paste0(party_name, &quot;_&quot;, party_count)
-      } else {
-        file_name &lt;- party_name
-      }
-      
-      # Write manifesto content to file
-      writeLines(content(country_corpus[[i]]), file.path(country, paste0(file_name, &quot;.txt&quot;)))
-    }
-    
-    cat(&quot;Manifestos for&quot;, country, &quot;have been saved.\n&quot;)
-  } else {
-    cat(&quot;No manifestos found for&quot;, country, &quot;in 2015.\n&quot;)
-  }
+  cat(&quot;No manifestos found for Azerbaijan in 2015.\n&quot;)
 }
-
-# List of Balkan countries and Turkey
-countries &lt;- c(&quot;Albania&quot;, &quot;Bosnia and Herzegovina&quot;, &quot;Bulgaria&quot;, &quot;Croatia&quot;, &quot;Kosovo&quot;, &quot;Montenegro&quot;, &quot;North Macedonia&quot;, &quot;Romania&quot;, &quot;Serbia&quot;, &quot;Slovenia&quot;, &quot;Turkey&quot;)
-
-# Loop through each country and save manifestos
-for (country in countries) {
-  save_manifestos(country)
-}</code></pre>
+</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiTm8gbWFuaWZlc3RvcyBmb3VuZCBmb3IgQWxiYW5pYSBpbiAyMDE1LlxuTm8gbWFuaWZlc3RvcyBmb3VuZCBmb3IgQm9zbmlhIGFuZCBIZXJ6ZWdvdmluYSBpbiAyMDE1LlxuTm8gbWFuaWZlc3RvcyBmb3VuZCBmb3IgQnVsZ2FyaWEgaW4gMjAxNS5cbk5vIG1hbmlmZXN0b3MgZm91bmQgZm9yIENyb2F0aWEgaW4gMjAxNS5cbk5vIG1hbmlmZXN0b3MgZm91bmQgZm9yIEtvc292byBpbiAyMDE1LlxuTm8gbWFuaWZlc3RvcyBmb3VuZCBmb3IgTW9udGVuZWdybyBpbiAyMDE1LlxuTm8gbWFuaWZlc3RvcyBmb3VuZCBmb3IgTm9ydGggTWFjZWRvbmlhIGluIDIwMTUuXG5ObyBtYW5pZmVzdG9zIGZvdW5kIGZvciBSb21hbmlhIGluIDIwMTUuXG5ObyBtYW5pZmVzdG9zIGZvdW5kIGZvciBTZXJiaWEgaW4gMjAxNS5cbk5vIG1hbmlmZXN0b3MgZm91bmQgZm9yIFNsb3ZlbmlhIGluIDIwMTUuXG5ObyBtYW5pZmVzdG9zIGZvdW5kIGZvciBUdXJrZXkgaW4gMjAxNS5cbiJ9 -->
-<pre><code>No manifestos found for Albania in 2015.
-No manifestos found for Bosnia and Herzegovina in 2015.
-No manifestos found for Bulgaria in 2015.
-No manifestos found for Croatia in 2015.
-No manifestos found for Kosovo in 2015.
-No manifestos found for Montenegro in 2015.
-No manifestos found for North Macedonia in 2015.
-No manifestos found for Romania in 2015.
-No manifestos found for Serbia in 2015.
-No manifestos found for Slovenia in 2015.
-No manifestos found for Turkey in 2015.</code></pre>
-<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZm9yKGkgaW4gMTpucm93KGF1c3RyaWFuX21hbmlmZXN0b3MpKSB7XG4gICMgRmV0Y2ggbWFuaWZlc3RvIHRleHRcbiAgbWFuaWZlc3RvX2RhdGEgPC0gbXBfY29ycHVzKGF1c3RyaWFuX21hbmlmZXN0b3MkcGFydHlbaV0pXG4gIFxuICAjIENoZWNrIGlmIHRoZSB0ZXh0IGlzIGRpcmVjdGx5IGFjY2Vzc2libGUgYW5kIGlzIGEgY2hhcmFjdGVyOyBhZGp1c3QgYmFzZWQgb24gdGhlIGFjdHVhbCBkYXRhIHN0cnVjdHVyZVxuICBpZihpcy5jaGFyYWN0ZXIobWFuaWZlc3RvX2RhdGEkdGV4dCkpIHtcbiAgICBtYW5pZmVzdG9fdGV4dCA8LSBtYW5pZmVzdG9fZGF0YSR0ZXh0XG4gIH0gZWxzZSB7XG4gICAgIyBJZiB0aGUgdGV4dCBpcyBub3QgZGlyZWN0bHkgYSBjaGFyYWN0ZXIgdmVjdG9yLCBhdHRlbXB0IGNvbnZlcnNpb25cbiAgICBtYW5pZmVzdG9fdGV4dCA8LSBhcy5jaGFyYWN0ZXIobWFuaWZlc3RvX2RhdGEkdGV4dCkgIyBBZGp1c3QgYXMgbmVjZXNzYXJ5XG4gIH1cbiAgXG4gICMgRGVmaW5lIGZpbGUgbmFtZSwgcmVtb3Zpbmcgc3BhY2VzIGZyb20gcGFydHkgbmFtZXMgYW5kIGRhc2hlcyBmcm9tIGRhdGVzIGZvciB0aGUgZmlsZW5hbWVcbiAgZmlsZV9uYW1lIDwtIHBhc3RlMChcIkF1c3RyaWFfXCIsIGdzdWIoXCJbWzpzcGFjZTpdXVwiLCBcIlwiLCBhdXN0cmlhbl9tYW5pZmVzdG9zJHBhcnR5W2ldKSwgXCJfXCIsIGdzdWIoXCItXCIsIFwiXCIsIGF1c3RyaWFuX21hbmlmZXN0b3MkZWRhdGVbaV0pLCBcIi50eHRcIilcbiAgXG4gICMgV3JpdGUgdG8gZmlsZSBpbiB0aGUgY3VycmVudCB3b3JraW5nIGRpcmVjdG9yeVxuICB3cml0ZUxpbmVzKG1hbmlmZXN0b190ZXh0LCBmaWxlX25hbWUpXG59XG5cbmBgYCJ9 -->
-<pre class="r"><code>for(i in 1:nrow(austrian_manifestos)) {
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZm9yKGkgaW4gMTpucm93KEF6ZXJiYWlqYW5uX21hbmlmZXN0b3MpKSB7XG4gICMgRmV0Y2ggbWFuaWZlc3RvIHRleHRcbiAgbWFuaWZlc3RvX2RhdGEgPC0gbXBfY29ycHVzKEF6ZXJiYWlqYW5uX21hbmlmZXN0b3MkcGFydHlbaV0pXG4gIFxuICAjIENoZWNrIGlmIHRoZSB0ZXh0IGlzIGRpcmVjdGx5IGFjY2Vzc2libGUgYW5kIGlzIGEgY2hhcmFjdGVyOyBhZGp1c3QgYmFzZWQgb24gdGhlIGFjdHVhbCBkYXRhIHN0cnVjdHVyZVxuICBpZihpcy5jaGFyYWN0ZXIobWFuaWZlc3RvX2RhdGEkdGV4dCkpIHtcbiAgICBtYW5pZmVzdG9fdGV4dCA8LSBtYW5pZmVzdG9fZGF0YSR0ZXh0XG4gIH0gZWxzZSB7XG4gICAgIyBJZiB0aGUgdGV4dCBpcyBub3QgZGlyZWN0bHkgYSBjaGFyYWN0ZXIgdmVjdG9yLCBhdHRlbXB0IGNvbnZlcnNpb25cbiAgICBtYW5pZmVzdG9fdGV4dCA8LSBhcy5jaGFyYWN0ZXIobWFuaWZlc3RvX2RhdGEkdGV4dCkgIyBBZGp1c3QgYXMgbmVjZXNzYXJ5XG4gIH1cbiAgXG4gICMgRGVmaW5lIGZpbGUgbmFtZSwgcmVtb3Zpbmcgc3BhY2VzIGZyb20gcGFydHkgbmFtZXMgYW5kIGRhc2hlcyBmcm9tIGRhdGVzIGZvciB0aGUgZmlsZW5hbWVcbiAgZmlsZV9uYW1lIDwtIHBhc3RlMChcIkF6ZXJiYWlqYW5fXCIsIGdzdWIoXCJbWzpzcGFjZTpdXVwiLCBcIlwiLCBBemVyYmFpamFubl9tYW5pZmVzdG9zJHBhcnR5W2ldKSwgXCJfXCIsIGdzdWIoXCItXCIsIFwiXCIsIEF6ZXJiYWlqYW5uX21hbmlmZXN0b3MkZWRhdGVbaV0pLCBcIi50eHRcIilcbiAgXG4gICMgV3JpdGUgdG8gZmlsZSBpbiB0aGUgY3VycmVudCB3b3JraW5nIGRpcmVjdG9yeVxuICB3cml0ZUxpbmVzKG1hbmlmZXN0b190ZXh0LCBmaWxlX25hbWUpXG59XG5cbmBgYCJ9 -->
+<pre class="r"><code>for(i in 1:nrow(Azerbaijann_manifestos)) {
   # Fetch manifesto text
-  manifesto_data &lt;- mp_corpus(austrian_manifestos$party[i])
+  manifesto_data &lt;- mp_corpus(Azerbaijann_manifestos$party[i])
   
   # Check if the text is directly accessible and is a character; adjust based on the actual data structure
   if(is.character(manifesto_data$text)) {
@@ -1998,7 +1928,7 @@ No manifestos found for Turkey in 2015.</code></pre>
   }
   
   # Define file name, removing spaces from party names and dashes from dates for the filename
-  file_name &lt;- paste0(&quot;Austria_&quot;, gsub(&quot;[[:space:]]&quot;, &quot;&quot;, austrian_manifestos$party[i]), &quot;_&quot;, gsub(&quot;-&quot;, &quot;&quot;, austrian_manifestos$edate[i]), &quot;.txt&quot;)
+  file_name &lt;- paste0(&quot;Azerbaijan_&quot;, gsub(&quot;[[:space:]]&quot;, &quot;&quot;, Azerbaijann_manifestos$party[i]), &quot;_&quot;, gsub(&quot;-&quot;, &quot;&quot;, Azerbaijann_manifestos$edate[i]), &quot;.txt&quot;)
   
   # Write to file in the current working directory
   writeLines(manifesto_text, file_name)
@@ -2111,17 +2041,17 @@ for(i in 1:length(manifestos)) {
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubWFpbl9kYXRhc2V0IDwtIG1wX21haW5kYXRhc2V0KClcblxuIyBGaWx0ZXIgZm9yIEF1c3RyaWFuIHBhcnRpZXNcbmF1c3RyaWFuX3BhcnRpZXMgPC0gc3Vic2V0KG1haW5fZGF0YXNldCwgY291bnRyeW5hbWUgPT0gXCJBdXN0cmlhXCIpXG5cbiMgRXh0cmFjdCBwYXJ0eSBJRHNcbmF1c3RyaWFuX3BhcnR5X2lkcyA8LSBhdXN0cmlhbl9wYXJ0aWVzJHBhcnR5XG5cbiMgVmlldyB0aGUgcGFydHkgSURzXG5wcmludChhdXN0cmlhbl9wYXJ0eV9pZHMpXG5gYGAifQ== -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubWFpbl9kYXRhc2V0IDwtIG1wX21haW5kYXRhc2V0KClcblxuIyBGaWx0ZXIgZm9yIEF6ZXJiYWlqYW5uIHBhcnRpZXNcbkF6ZXJiYWlqYW5uX3BhcnRpZXMgPC0gc3Vic2V0KG1haW5fZGF0YXNldCwgY291bnRyeW5hbWUgPT0gXCJBemVyYmFpamFuXCIpXG5cbiMgRXh0cmFjdCBwYXJ0eSBJRHNcbkF6ZXJiYWlqYW5uX3BhcnR5X2lkcyA8LSBBemVyYmFpamFubl9wYXJ0aWVzJHBhcnR5XG5cbiMgVmlldyB0aGUgcGFydHkgSURzXG5wcmludChBemVyYmFpamFubl9wYXJ0eV9pZHMpXG5gYGAifQ== -->
 <pre class="r"><code>main_dataset &lt;- mp_maindataset()
 
-# Filter for Austrian parties
-austrian_parties &lt;- subset(main_dataset, countryname == &quot;Austria&quot;)
+# Filter for Azerbaijann parties
+Azerbaijann_parties &lt;- subset(main_dataset, countryname == &quot;Azerbaijan&quot;)
 
 # Extract party IDs
-austrian_party_ids &lt;- austrian_parties$party
+Azerbaijann_party_ids &lt;- Azerbaijann_parties$party
 
 # View the party IDs
-print(austrian_party_ids)</code></pre>
+print(Azerbaijann_party_ids)</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -2150,8 +2080,22 @@ editor. Consequently, unlike <em>Knit</em>, <em>Preview</em> does not
 run any R code chunks. Instead, the output of the chunk when it was last
 run in the editor is displayed.</p>
 <!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubXBfc2V0YXBpa2V5KFwibWFuaWZlc3RvX2FwaWtleS50eHRcIilcbm15X2NvcnB1cyA8LSBtcF9jb3JwdXMocGFydHkgPT0gODgzMjApXG5teV9jb3JwdXNcbmBgYCJ9 -->
+<pre class="r"><code>mp_setapikey(&quot;manifesto_apikey.txt&quot;)
+my_corpus &lt;- mp_corpus(party == 88320)
+my_corpus</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiPDxNYW5pZmVzdG9Db3JwdXM+PlxuTWV0YWRhdGE6ICBjb3JwdXMgc3BlY2lmaWM6IDAsIGRvY3VtZW50IGxldmVsIChpbmRleGVkKTogMFxuQ29udGVudDogIGRvY3VtZW50czogNFxuIn0= -->
+<pre><code>&lt;&lt;ManifestoCorpus&gt;&gt;
+Metadata:  corpus specific: 0, document level (indexed): 0
+Content:  documents: 4</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogIlIgTm90ZWJvb2siDQpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sNCi0tLQ0KDQpUaGlzIGlzIGFuIFtSIE1hcmtkb3duXShodHRwOi8vcm1hcmtkb3duLnJzdHVkaW8uY29tKSBOb3RlYm9vay4gV2hlbiB5b3UgZXhlY3V0ZSBjb2RlIHdpdGhpbiB0aGUgbm90ZWJvb2ssIHRoZSByZXN1bHRzIGFwcGVhciBiZW5lYXRoIHRoZSBjb2RlLg0KDQpUcnkgZXhlY3V0aW5nIHRoaXMgY2h1bmsgYnkgY2xpY2tpbmcgdGhlICpSdW4qIGJ1dHRvbiB3aXRoaW4gdGhlIGNodW5rIG9yIGJ5IHBsYWNpbmcgeW91ciBjdXJzb3IgaW5zaWRlIGl0IGFuZCBwcmVzc2luZyAqQ3RybCtTaGlmdCtFbnRlciouDQoNCmBgYHtyfQ0KbGlicmFyeShtYW5pZmVzdG9SKQ0KbGlicmFyeSh0b2tlbml6ZXJzKQ0KbGlicmFyeShOTFApDQpsaWJyYXJ5KHRleHRzdGVtKQ0KbGlicmFyeSh0ZXh0ZGF0YSkNCmxpYnJhcnkodGlkeXRleHQpDQpsaWJyYXJ5KHNlbnRpbWVudHIpDQpsaWJyYXJ5KGRwbHlyKQ0KbGlicmFyeSh0aWR5cikNCmBgYA0KDQpgYGB7cn0NCm1wX3NldGFwaWtleSgibWFuaWZlc3RvX2FwaWtleS50eHQiKQ0KbXlfY29ycHVzIDwtIG1wX2NvcnB1cyhjb3VudHJ5bmFtZSA9PSAiQXVzdHJpYSIgJiBlZGF0ZSA+IGFzLkRhdGUoIjIwMTUtMDEtMDEiKSkNCm15X2NvcnB1cw0KYGBgDQoNClRyeSBnZXR0aW5nIHRoZSBDb3JwdXMgb2Ygb25lIHBhcnR5IGFuZCBvbmUgbWFuaWZlc3RvDQpgYGB7cn0NCm1wX3NldGFwaWtleSgibWFuaWZlc3RvX2FwaWtleS50eHQiKQ0KbXlfY29ycHVzIDwtIG1wX2NvcnB1cyhjb3VudHJ5bmFtZSA9PSAiR3JlZWNlIiAmIGVkYXRlID49IGFzLkRhdGUoIjIwMTUtMDEtMDEiKSAmIGVkYXRlIDwgYXMuRGF0ZSgiMjAxNi0wMS0wMSIpKQ0KbXlfY29ycHVzDQpgYGANCmBgYHtyfQ0KIyBJdGVyYXRlIG92ZXIgZWFjaCBkb2N1bWVudCBpbiB0aGUgY29ycHVzDQpmb3IgKGkgaW4gMTpsZW5ndGgobXlfY29ycHVzKSkgew0KICAjIEV4dHJhY3QgcGFydHkgbmFtZSBmcm9tIHRoZSBtZXRhZGF0YQ0KICBwYXJ0eV9uYW1lIDwtIG1ldGEobXlfY29ycHVzW1tpXV0pJHBhcnR5DQogICMgUHJpbnQgb3V0IHBhcnR5IG5hbWUgYWxvbmcgd2l0aCBtYW5pZmVzdG8gaW5kZXgNCiAgY2F0KCJNYW5pZmVzdG8iLCBpLCAiUGFydHkgTmFtZToiLCBwYXJ0eV9uYW1lLCAiXG4iKQ0KfQ0KDQoNCmBgYA0KYGBge3J9DQojIExvYWQgbWFuaWZlc3RvUiBwYWNrYWdlDQpsaWJyYXJ5KG1hbmlmZXN0b1IpDQoNCiMgU2V0IEFQSSBrZXkNCm1wX3NldGFwaWtleSgibWFuaWZlc3RvX2FwaWtleS50eHQiKSAgIyBSZXBsYWNlICJtYW5pZmVzdG9fYXBpa2V5LnR4dCIgd2l0aCB5b3VyIGFjdHVhbCBBUEkga2V5IGZpbGUgbmFtZQ0KDQojIERvd25sb2FkIGRvY3VtZW50cyBmb3IgR3JlZWNlIGluIDIwMTUNCm15X2NvcnB1cyA8LSBtcF9jb3JwdXMoY291bnRyeW5hbWUgPT0gIkdyZWVjZSIgJiBlZGF0ZSA+PSBhcy5EYXRlKCIyMDE1LTAxLTAxIikgJiBlZGF0ZSA8IGFzLkRhdGUoIjIwMTYtMDEtMDEiKSkNCg0KIyBDaGVjayBpZiBhbnkgbWFuaWZlc3RvcyBleGlzdCBmb3IgR3JlZWNlDQppZiAobGVuZ3RoKG15X2NvcnB1cykgPiAwKSB7DQogICMgQ3JlYXRlIGRpcmVjdG9yeSBmb3IgR3JlZWNlIGlmIGl0IGRvZXNuJ3QgZXhpc3QNCiAgZGlyLmNyZWF0ZSgiR3JlZWNlIiwgc2hvd1dhcm5pbmdzID0gRkFMU0UsIHJlY3Vyc2l2ZSA9IFRSVUUpDQogIA0KICAjIEl0ZXJhdGUgb3ZlciBlYWNoIGRvY3VtZW50IGluIHRoZSBjb3JwdXMNCiAgZm9yIChpIGluIDE6bGVuZ3RoKG15X2NvcnB1cykpIHsNCiAgICAjIEV4dHJhY3QgcGFydHkgbmFtZSBmcm9tIHRoZSBtZXRhZGF0YQ0KICAgIHBhcnR5X25hbWUgPC0gbWV0YShteV9jb3JwdXNbW2ldXSkkcGFydHkNCiAgICANCiAgICAjIENvdW50IHRoZSBvY2N1cnJlbmNlcyBvZiB0aGUgcGFydHkgbmFtZSBpbiBwcmV2aW91c2x5IHByb2Nlc3NlZCBkb2N1bWVudHMNCiAgICBwYXJ0eV9jb3VudCA8LSBzdW0oc3Vic3RyKHBhcnR5X25hbWVzLCAxLCBuY2hhcihwYXJ0eV9uYW1lKSkgPT0gcGFydHlfbmFtZSkNCiAgICANCiAgICAjIEdlbmVyYXRlIGZpbGUgbmFtZQ0KICAgIGlmIChwYXJ0eV9jb3VudCA+IDEpIHsNCiAgICAgIGZpbGVfbmFtZSA8LSBwYXN0ZTAocGFydHlfbmFtZSwgIl8iLCBwYXJ0eV9jb3VudCkNCiAgICB9IGVsc2Ugew0KICAgICAgZmlsZV9uYW1lIDwtIHBhcnR5X25hbWUNCiAgICB9DQogICAgDQogICAgIyBXcml0ZSBtYW5pZmVzdG8gY29udGVudCB0byBmaWxlDQogICAgd3JpdGVMaW5lcyhjb250ZW50KG15X2NvcnB1c1tbaV1dKSwgZmlsZS5wYXRoKCJHcmVlY2UiLCBwYXN0ZTAoZmlsZV9uYW1lLCAiLnR4dCIpKSkNCiAgfQ0KICANCiAgY2F0KCJNYW5pZmVzdG9zIGZvciBHcmVlY2UgaGF2ZSBiZWVuIHNhdmVkLlxuIikNCn0gZWxzZSB7DQogIGNhdCgiTm8gbWFuaWZlc3RvcyBmb3VuZCBmb3IgR3JlZWNlIGluIDIwMTUuXG4iKQ0KfQ0KDQpgYGANCg0KYGBge3J9DQojIExvYWQgbWFuaWZlc3RvUiBwYWNrYWdlDQpsaWJyYXJ5KG1hbmlmZXN0b1IpDQoNCiMgU2V0IEFQSSBrZXkNCm1wX3NldGFwaWtleSgibWFuaWZlc3RvX2FwaWtleS50eHQiKSAgDQoNCiMgRG93bmxvYWQgZG9jdW1lbnRzIGZvciBHcmVlY2UgaW4gMjAxNQ0KbXlfY29ycHVzIDwtIG1wX2NvcnB1cyhjb3VudHJ5bmFtZSA9PSAiR3JlZWNlIiAmIGVkYXRlID49IGFzLkRhdGUoIjIwMTUtMDEtMDEiKSAmIGVkYXRlIDwgYXMuRGF0ZSgiMjAxNi0wMS0wMSIpKQ0KDQojIENoZWNrIGlmIGFueSBtYW5pZmVzdG9zIGV4aXN0IGZvciBHcmVlY2UNCmlmIChsZW5ndGgobXlfY29ycHVzKSA+IDApIHsNCiAgIyBDcmVhdGUgZGlyZWN0b3J5IGZvciBHcmVlY2UgaWYgaXQgZG9lc24ndCBleGlzdA0KICBpZiAoIWRpci5leGlzdHMoIkdyZWVjZSIpKSBkaXIuY3JlYXRlKCJHcmVlY2UiKQ0KICANCiAgIyBTYXZlIG1hbmlmZXN0b3MNCiAgZm9yIChpIGluIDE6bGVuZ3RoKG15X2NvcnB1cykpIHsNCiAgICBwYXJ0eV9uYW1lIDwtIG1ldGEobXlfY29ycHVzW1tpXV0pJHBhcnR5DQogICAgcGFydHlfY291bnQgPC0gc3VtKHN1YnN0cihwYXJ0eV9uYW1lcywgMSwgbmNoYXIocGFydHlfbmFtZSkpID09IHBhcnR5X25hbWUpDQogICAgZmlsZV9uYW1lIDwtIGlmZWxzZShwYXJ0eV9jb3VudCA+IDEsIHBhc3RlMChwYXJ0eV9uYW1lLCAiXyIsIHBhcnR5X2NvdW50KSwgcGFydHlfbmFtZSkNCiAgICB3cml0ZUxpbmVzKGNvbnRlbnQobXlfY29ycHVzW1tpXV0pLCBmaWxlLnBhdGgoIkdyZWVjZSIsIHBhc3RlMChmaWxlX25hbWUsICIudHh0IikpKQ0KICB9DQogIGNhdCgiTWFuaWZlc3RvcyBmb3IgR3JlZWNlIGhhdmUgYmVlbiBzYXZlZC5cbiIpDQp9IGVsc2Ugew0KICBjYXQoIk5vIG1hbmlmZXN0b3MgZm91bmQgZm9yIEdyZWVjZSBpbiAyMDE1LlxuIikNCn0NCg0KYGBgDQoNCg0KDQoNCmBgYHtyfQ0KIyBMb2FkIG1hbmlmZXN0b1IgcGFja2FnZQ0KbGlicmFyeShtYW5pZmVzdG9SKQ0KDQojIFNldCBBUEkga2V5DQptcF9zZXRhcGlrZXkoIm1hbmlmZXN0b19hcGlrZXkudHh0IikgICMgUmVwbGFjZSAibWFuaWZlc3RvX2FwaWtleS50eHQiIHdpdGggeW91ciBhY3R1YWwgQVBJIGtleSBmaWxlIG5hbWUNCg0KIyBEZWZpbmUgZnVuY3Rpb24gdG8gc2F2ZSBtYW5pZmVzdG9zIGZvciBhIGdpdmVuIGNvdW50cnkNCnNhdmVfbWFuaWZlc3RvcyA8LSBmdW5jdGlvbihjb3VudHJ5KSB7DQogICMgRG93bmxvYWQgZG9jdW1lbnRzIGZvciB0aGUgc3BlY2lmaWVkIGNvdW50cnkgaW4gMjAxNQ0KICBjb3VudHJ5X2NvcnB1cyA8LSBtcF9jb3JwdXMoY291bnRyeW5hbWUgPT0gY291bnRyeSAmIGVkYXRlID49IGFzLkRhdGUoIjIwMTUtMDEtMDEiKSAmIGVkYXRlIDw9IGFzLkRhdGUoIjIwMTUtMTItMzEiKSkNCiAgDQogICMgQ2hlY2sgaWYgYW55IG1hbmlmZXN0b3MgZXhpc3QgZm9yIHRoZSBjb3VudHJ5DQogIGlmIChsZW5ndGgoY291bnRyeV9jb3JwdXMpID4gMCkgew0KICAgIGNhdCgiTWFuaWZlc3RvcyBmb3VuZCBmb3IiLCBjb3VudHJ5LCAiXG4iKQ0KICAgIA0KICAgICMgQ3JlYXRlIGRpcmVjdG9yeSBmb3IgdGhlIGNvdW50cnkgaWYgaXQgZG9lc24ndCBleGlzdA0KICAgIGRpci5jcmVhdGUoY291bnRyeSwgc2hvd1dhcm5pbmdzID0gVFJVRSwgcmVjdXJzaXZlID0gVFJVRSkNCiAgICANCiAgICAjIENoZWNrIGlmIGRpcmVjdG9yeSB3YXMgY3JlYXRlZA0KICAgIGlmIChmaWxlLmV4aXN0cyhjb3VudHJ5KSkgew0KICAgICAgY2F0KCJEaXJlY3RvcnkgY3JlYXRlZCBmb3IiLCBjb3VudHJ5LCAiXG4iKQ0KICAgIH0gZWxzZSB7DQogICAgICBjYXQoIkZhaWxlZCB0byBjcmVhdGUgZGlyZWN0b3J5IGZvciIsIGNvdW50cnksICJcbiIpDQogICAgfQ0KICAgIA0KICAgICMgSXRlcmF0ZSBvdmVyIGVhY2ggZG9jdW1lbnQgaW4gdGhlIGNvcnB1cw0KICAgIGZvciAoaSBpbiAxOmxlbmd0aChjb3VudHJ5X2NvcnB1cykpIHsNCiAgICAgICMgRXh0cmFjdCBwYXJ0eSBuYW1lIGZyb20gdGhlIG1ldGFkYXRhDQogICAgICBwYXJ0eV9uYW1lIDwtIG1ldGEoY291bnRyeV9jb3JwdXNbW2ldXSkkcGFydHkNCiAgICAgIA0KICAgICAgIyBDb3VudCB0aGUgb2NjdXJyZW5jZXMgb2YgdGhlIHBhcnR5IG5hbWUgaW4gcHJldmlvdXNseSBwcm9jZXNzZWQgZG9jdW1lbnRzDQogICAgICBwYXJ0eV9jb3VudCA8LSBzdW0oc3Vic3RyKHBhcnR5X25hbWVzLCAxLCBuY2hhcihwYXJ0eV9uYW1lKSkgPT0gcGFydHlfbmFtZSkNCiAgICAgIA0KICAgICAgIyBHZW5lcmF0ZSBmaWxlIG5hbWUNCiAgICAgIGlmIChwYXJ0eV9jb3VudCA+IDEpIHsNCiAgICAgICAgZmlsZV9uYW1lIDwtIHBhc3RlMChwYXJ0eV9uYW1lLCAiXyIsIHBhcnR5X2NvdW50KQ0KICAgICAgfSBlbHNlIHsNCiAgICAgICAgZmlsZV9uYW1lIDwtIHBhcnR5X25hbWUNCiAgICAgIH0NCiAgICAgIA0KICAgICAgIyBXcml0ZSBtYW5pZmVzdG8gY29udGVudCB0byBmaWxlDQogICAgICB3cml0ZUxpbmVzKGNvbnRlbnQoY291bnRyeV9jb3JwdXNbW2ldXSksIGZpbGUucGF0aChjb3VudHJ5LCBwYXN0ZTAoZmlsZV9uYW1lLCAiLnR4dCIpKSkNCiAgICB9DQogICAgDQogICAgY2F0KCJNYW5pZmVzdG9zIGZvciIsIGNvdW50cnksICJoYXZlIGJlZW4gc2F2ZWQuXG4iKQ0KICB9IGVsc2Ugew0KICAgIGNhdCgiTm8gbWFuaWZlc3RvcyBmb3VuZCBmb3IiLCBjb3VudHJ5LCAiaW4gMjAxNS5cbiIpDQogIH0NCn0NCg0KIyBMaXN0IG9mIEJhbGthbiBjb3VudHJpZXMgYW5kIFR1cmtleQ0KY291bnRyaWVzIDwtIGMoIkFsYmFuaWEiLCAiQm9zbmlhIGFuZCBIZXJ6ZWdvdmluYSIsICJCdWxnYXJpYSIsICJDcm9hdGlhIiwgIktvc292byIsICJNb250ZW5lZ3JvIiwgIk5vcnRoIE1hY2Vkb25pYSIsICJSb21hbmlhIiwgIlNlcmJpYSIsICJTbG92ZW5pYSIsICJUdXJrZXkiKQ0KDQojIExvb3AgdGhyb3VnaCBlYWNoIGNvdW50cnkgYW5kIHNhdmUgbWFuaWZlc3Rvcw0KZm9yIChjb3VudHJ5IGluIGNvdW50cmllcykgew0KICBzYXZlX21hbmlmZXN0b3MoY291bnRyeSkNCn0NCg0KYGBgDQoNCmBgYHtyfQ0KZm9yKGkgaW4gMTpucm93KGF1c3RyaWFuX21hbmlmZXN0b3MpKSB7DQogICMgRmV0Y2ggbWFuaWZlc3RvIHRleHQNCiAgbWFuaWZlc3RvX2RhdGEgPC0gbXBfY29ycHVzKGF1c3RyaWFuX21hbmlmZXN0b3MkcGFydHlbaV0pDQogIA0KICAjIENoZWNrIGlmIHRoZSB0ZXh0IGlzIGRpcmVjdGx5IGFjY2Vzc2libGUgYW5kIGlzIGEgY2hhcmFjdGVyOyBhZGp1c3QgYmFzZWQgb24gdGhlIGFjdHVhbCBkYXRhIHN0cnVjdHVyZQ0KICBpZihpcy5jaGFyYWN0ZXIobWFuaWZlc3RvX2RhdGEkdGV4dCkpIHsNCiAgICBtYW5pZmVzdG9fdGV4dCA8LSBtYW5pZmVzdG9fZGF0YSR0ZXh0DQogIH0gZWxzZSB7DQogICAgIyBJZiB0aGUgdGV4dCBpcyBub3QgZGlyZWN0bHkgYSBjaGFyYWN0ZXIgdmVjdG9yLCBhdHRlbXB0IGNvbnZlcnNpb24NCiAgICBtYW5pZmVzdG9fdGV4dCA8LSBhcy5jaGFyYWN0ZXIobWFuaWZlc3RvX2RhdGEkdGV4dCkgIyBBZGp1c3QgYXMgbmVjZXNzYXJ5DQogIH0NCiAgDQogICMgRGVmaW5lIGZpbGUgbmFtZSwgcmVtb3Zpbmcgc3BhY2VzIGZyb20gcGFydHkgbmFtZXMgYW5kIGRhc2hlcyBmcm9tIGRhdGVzIGZvciB0aGUgZmlsZW5hbWUNCiAgZmlsZV9uYW1lIDwtIHBhc3RlMCgiQXVzdHJpYV8iLCBnc3ViKCJbWzpzcGFjZTpdXSIsICIiLCBhdXN0cmlhbl9tYW5pZmVzdG9zJHBhcnR5W2ldKSwgIl8iLCBnc3ViKCItIiwgIiIsIGF1c3RyaWFuX21hbmlmZXN0b3MkZWRhdGVbaV0pLCAiLnR4dCIpDQogIA0KICAjIFdyaXRlIHRvIGZpbGUgaW4gdGhlIGN1cnJlbnQgd29ya2luZyBkaXJlY3RvcnkNCiAgd3JpdGVMaW5lcyhtYW5pZmVzdG9fdGV4dCwgZmlsZV9uYW1lKQ0KfQ0KDQpgYGANCg0KYGBge3J9DQptYW5pZmVzdG9zIDwtIG1wX2NvcnB1cyhwYXJ0eSA9PSA0MjMyMCkNCm1hbmlmZXN0b3MNCmBgYA0KDQoNCmBgYHtyfQ0KIyBBY2Nlc3NpbmcgdGhlIGNvcnB1cyBjb250ZW50DQp0ZXh0ID0gY29udGVudChtYW5pZmVzdG9zW1sxXV0pDQpgYGANCg0KTm93IHdlIHdhbnQgdG8gY2xlYW4gdGhlIGFib3ZlIGRhdGEgYSBiaXQ6DQoNCmBgYHtyfQ0KY2xlYW5fdGV4dCA8LSBmdW5jdGlvbih0ZXh0KSB7DQogICMgY292ZXJ0IHRvIEFTQ0lJIHdoaWNoIHdpbGwgcmVtb3ZlIGFjY2VudHMgYW5kIHJlbW92ZSBzcGVjaWFsIGNoYXJhY3RlcnMNCiAgdGV4dCA8LSBpY29udih0ZXh0LCBmcm9tID0gJ1VURi04JywgdG8gPSAnQVNDSUkvL1RSQU5TTElUJykNCiAgdGV4dCA8LSBnc3ViKCJbXmEtekEtWjAtOSBdIiwgIiIsIHRleHQpDQogICNtYWtlIGxvd2VyY2FzZQ0KICB0ZXh0IDwtIHRvbG93ZXIodGV4dCkNCiAgI3Rva2VuaXplIHdvcmRzDQogIHRva2VucyA8LSB1bmxpc3Qoc3Ryc3BsaXQodGV4dCwgIlxccysiKSkNCiAgcmV0dXJuICh0b2tlbnMpDQp9DQoNCnNhbXBsZV90ZXh0IDwtICJTbyBub3cgICEgdGhla2Jjamxud2NrbG4gZXdxYSBlY2puayB3am5kd3V5MzgzMjAyICEhIzJidW0iDQoNCiMgQ2xlYW4gdGhlIHRleHQNCmNsZWFuZWRfdGV4dCA8LSBjbGVhbl90ZXh0KG1hbmlmZXN0b3NbWzFdXSkNCg0KYGBgDQoNCkZ1bmN0aW9ucyB0byByZW1vdmUgc3RvcHdvcmRzIGFuZCBmb3IgZWFjaCBsYW5ndWFnZToNCg0KYGBge3J9DQojcmVtb3ZlIHN0b3B3b3JkcyBhbmQgc3RlbSB3b3JkcyBlbmdsaXNoDQpmaWx0ZXJlZF90b2tlbnNfZGUgPC0gZnVuY3Rpb24odG9rZW5pemVkVGV4dCkgew0KICBmaWx0ZXJlZF90b2tlbnMgPC0gcmVtb3ZlV29yZHModG9rZW5pemVkVGV4dCwgc3RvcHdvcmRzKCJlbiIpKQ0KICBmaWx0ZXJlZF90b2tlbnMgPC0gY2xlYW5lZF90ZXh0X3AyW2NsZWFuZWRfdGV4dF9wMiAhPSAiIl0NCiAgc3RlbW1lZF93b3JkcyA8LSBzdGVtX3dvcmRzKGZpbHRlcmVkX3Rva2VucywgbGFuZ3VhZ2UgPSAiZW5nbGlzaCIpDQogIHJldHVybiAoc3RlbW1lZF93b3JkcykNCn0NCiNyZW1vdmUgc3RvcHdvcmRzIGFuZCBzdGVtIHdvcmRzIGdlcm1hbg0KZmlsdGVyZWRfdG9rZW5zX2RlIDwtIGZ1bmN0aW9uKHRva2VuaXplZFRleHQpIHsNCiAgZmlsdGVyZWRfdG9rZW5zIDwtIHJlbW92ZVdvcmRzKHRva2VuaXplZFRleHQsIHN0b3B3b3JkcygiZGUiKSkNCiAgZmlsdGVyZWRfdG9rZW5zIDwtIGZpbHRlcmVkX3Rva2Vuc1tmaWx0ZXJlZF90b2tlbnMgIT0gIiJdDQogIHN0ZW1tZWRfd29yZHMgPC0gc3RlbV93b3JkcyhmaWx0ZXJlZF90b2tlbnMsIGxhbmd1YWdlID0gImdlcm1hbiIpDQogIHJldHVybiAoc3RlbW1lZF93b3JkcykNCn0NCmBgYA0KDQpOb3cgYXBwbHkgc3RvcHdvcmQgZmlsdGVyczoNCg0KYGBge3J9DQp0ZXh0X2RhdGEgPSBjKHRleHQpDQpkZiA8LSBkYXRhLmZyYW1lKHRleHQ9dGV4dF9kYXRhKQ0KDQpzZW50aW1lbnRfc2NvcmVzIDwtIGRmICU+JQ0KICB1bm5lc3RfdG9rZW5zKHdvcmQsIHRleHQpICU+JQ0KICBpbm5lcl9qb2luKGdldF9zZW50aW1lbnRzKCJiaW5nIiksIGJ5ID0gIndvcmQiKQ0KYGBgDQpgYGB7cn0NCnNlbnRpbWVudF9zY29yZXMNCmBgYA0KDQpgYGB7cn0NCnNlbnRpbWVudF9zdW1tYXJ5IDwtIHNlbnRpbWVudF9zY29yZXMgJT4lDQogIGNvdW50KHNlbnRpbWVudCkgJT4lDQogIHNwcmVhZChzZW50aW1lbnQsIG4sIGZpbGwgPSAwKSAlPiUNCiAgbXV0YXRlKHNlbnRpbWVudF9zY29yZSA9IHBvc2l0aXZlIC0gbmVnYXRpdmUpDQoNCnByaW50KHNlbnRpbWVudF9zdW1tYXJ5KQ0KDQpgYGANCg0KYGBge30NCmBgYA0KDQpgYGB7cn0NCiNmdW5jdGlvbiB0byBjbGVhbiBlYWNoIG1hbmlmZXN0bw0KZm9yKGkgaW4gMTpsZW5ndGgobWFuaWZlc3RvcykpIHsNCiAgbWFuaWZlc3Rvc19jb250ZW50W1tpXV0gPC0gY29udGVudChtYW5pZmVzdG9zW1tpXV0pDQp9DQpgYGANCg0KYGBge3J9DQptYWluX2RhdGFzZXQgPC0gbXBfbWFpbmRhdGFzZXQoKQ0KDQojIEZpbHRlciBmb3IgQXVzdHJpYW4gcGFydGllcw0KYXVzdHJpYW5fcGFydGllcyA8LSBzdWJzZXQobWFpbl9kYXRhc2V0LCBjb3VudHJ5bmFtZSA9PSAiQXVzdHJpYSIpDQoNCiMgRXh0cmFjdCBwYXJ0eSBJRHMNCmF1c3RyaWFuX3BhcnR5X2lkcyA8LSBhdXN0cmlhbl9wYXJ0aWVzJHBhcnR5DQoNCiMgVmlldyB0aGUgcGFydHkgSURzDQpwcmludChhdXN0cmlhbl9wYXJ0eV9pZHMpDQpgYGANCg0KYGBge3J9DQptcF9hdmFpbGFiaWxpdHkocGFydHk9PTQyMzIwKQ0KDQpgYGANCg0KYGBge3J9DQptcF92aWV3X29yaWdpbmFscyhwYXJ0eSA9PSA0MjMyMCwgbWF4biA9IDIwKQ0KYGBgDQoNCkFkZCBhIG5ldyBjaHVuayBieSBjbGlja2luZyB0aGUgKkluc2VydCBDaHVuayogYnV0dG9uIG9uIHRoZSB0b29sYmFyIG9yIGJ5IHByZXNzaW5nICpDdHJsK0FsdCtJKi4NCg0KV2hlbiB5b3Ugc2F2ZSB0aGUgbm90ZWJvb2ssIGFuIEhUTUwgZmlsZSBjb250YWluaW5nIHRoZSBjb2RlIGFuZCBvdXRwdXQgd2lsbCBiZSBzYXZlZCBhbG9uZ3NpZGUgaXQgKGNsaWNrIHRoZSAqUHJldmlldyogYnV0dG9uIG9yIHByZXNzICpDdHJsK1NoaWZ0K0sqIHRvIHByZXZpZXcgdGhlIEhUTUwgZmlsZSkuDQoNClRoZSBwcmV2aWV3IHNob3dzIHlvdSBhIHJlbmRlcmVkIEhUTUwgY29weSBvZiB0aGUgY29udGVudHMgb2YgdGhlIGVkaXRvci4gQ29uc2VxdWVudGx5LCB1bmxpa2UgKktuaXQqLCAqUHJldmlldyogZG9lcyBub3QgcnVuIGFueSBSIGNvZGUgY2h1bmtzLiBJbnN0ZWFkLCB0aGUgb3V0cHV0IG9mIHRoZSBjaHVuayB3aGVuIGl0IHdhcyBsYXN0IHJ1biBpbiB0aGUgZWRpdG9yIGlzIGRpc3BsYXllZC4NCg==</div>
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIlIgTm90ZWJvb2siDQpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sNCi0tLQ0KDQpUaGlzIGlzIGFuIFtSIE1hcmtkb3duXShodHRwOi8vcm1hcmtkb3duLnJzdHVkaW8uY29tKSBOb3RlYm9vay4gV2hlbiB5b3UgZXhlY3V0ZSBjb2RlIHdpdGhpbiB0aGUgbm90ZWJvb2ssIHRoZSByZXN1bHRzIGFwcGVhciBiZW5lYXRoIHRoZSBjb2RlLg0KDQpUcnkgZXhlY3V0aW5nIHRoaXMgY2h1bmsgYnkgY2xpY2tpbmcgdGhlICpSdW4qIGJ1dHRvbiB3aXRoaW4gdGhlIGNodW5rIG9yIGJ5IHBsYWNpbmcgeW91ciBjdXJzb3IgaW5zaWRlIGl0IGFuZCBwcmVzc2luZyAqQ3RybCtTaGlmdCtFbnRlciouDQoNCmBgYHtyfQ0KbGlicmFyeShtYW5pZmVzdG9SKQ0KbGlicmFyeSh0b2tlbml6ZXJzKQ0KbGlicmFyeShOTFApDQpsaWJyYXJ5KHRleHRzdGVtKQ0KbGlicmFyeSh0ZXh0ZGF0YSkNCmxpYnJhcnkodGlkeXRleHQpDQpsaWJyYXJ5KHNlbnRpbWVudHIpDQpsaWJyYXJ5KGRwbHlyKQ0KbGlicmFyeSh0aWR5cikNCmBgYA0KDQpgYGB7cn0NCm1wX3NldGFwaWtleSgibWFuaWZlc3RvX2FwaWtleS50eHQiKQ0KbXlfY29ycHVzIDwtIG1wX2NvcnB1cyhjb3VudHJ5bmFtZSA9PSAiQXplcmJhaWphbiIgJiBlZGF0ZSA+IGFzLkRhdGUoIjIwMTUtMDEtMDEiKSkNCm15X2NvcnB1cw0KYGBgDQoNClRyeSBnZXR0aW5nIHRoZSBDb3JwdXMgb2Ygb25lIHBhcnR5IGFuZCBvbmUgbWFuaWZlc3RvDQpgYGB7cn0NCm1wX3NldGFwaWtleSgibWFuaWZlc3RvX2FwaWtleS50eHQiKQ0KbXlfY29ycHVzIDwtIG1wX2NvcnB1cyhjb3VudHJ5bmFtZSA9PSAiQXplcmJhaWphbiIgJiBlZGF0ZSA+PSBhcy5EYXRlKCIyMDE1LTAxLTAxIikgJiBlZGF0ZSA8IGFzLkRhdGUoIjIwMTYtMDEtMDEiKSkNCm15X2NvcnB1cw0KYGBgDQpgYGB7cn0NCiMgSXRlcmF0ZSBvdmVyIGVhY2ggZG9jdW1lbnQgaW4gdGhlIGNvcnB1cw0KZm9yIChpIGluIDE6bGVuZ3RoKG15X2NvcnB1cykpIHsNCiAgIyBFeHRyYWN0IHBhcnR5IG5hbWUgZnJvbSB0aGUgbWV0YWRhdGENCiAgcGFydHlfbmFtZSA8LSBtZXRhKG15X2NvcnB1c1tbaV1dKSRwYXJ0eQ0KICAjIFByaW50IG91dCBwYXJ0eSBuYW1lIGFsb25nIHdpdGggbWFuaWZlc3RvIGluZGV4DQogIGNhdCgiTWFuaWZlc3RvIiwgaSwgIlBhcnR5IE5hbWU6IiwgcGFydHlfbmFtZSwgIlxuIikNCn0NCg0KDQpgYGANCg0KDQoNCg0KVGhpcyBiZWxvdyBpcyB0aGUgd29ya2luZyBjb2RlIHRvIGdldCBtb2FuaWZlc3RvcyBhbmQgYWRkIHRoZW0gdG8gYSBkaXJlY3Rvcnkgd2l0aCB0aGUgcGFydHkgSUQNCg0KYGBge3J9DQojIExvYWQgbWFuaWZlc3RvUiBwYWNrYWdlDQpsaWJyYXJ5KG1hbmlmZXN0b1IpDQoNCiMgU2V0IEFQSSBrZXkNCm1wX3NldGFwaWtleSgibWFuaWZlc3RvX2FwaWtleS50eHQiKSAgDQoNCiMgRG93bmxvYWQgZG9jdW1lbnRzIGZvciBBemVyYmFpamFuIGluIDIwMTUNCm15X2NvcnB1cyA8LSBtcF9jb3JwdXMoY291bnRyeW5hbWUgPT0gIkF6ZXJiYWlqYW4iICYgZWRhdGUgPj0gYXMuRGF0ZSgiMjAxNS0wMS0wMSIpICYgZWRhdGUgPCBhcy5EYXRlKCIyMDE2LTAxLTAxIikpDQoNCiMgQ2hlY2sgaWYgYW55IG1hbmlmZXN0b3MgZXhpc3QgZm9yIEF6ZXJiYWlqYW4NCmlmIChsZW5ndGgobXlfY29ycHVzKSA+IDApIHsNCiAgIyBDcmVhdGUgZGlyZWN0b3J5IGZvciBBemVyYmFpamFuIGlmIGl0IGRvZXNuJ3QgZXhpc3QNCiAgaWYgKCFkaXIuZXhpc3RzKCJBemVyYmFpamFuIikpIGRpci5jcmVhdGUoIkF6ZXJiYWlqYW4iKQ0KICANCiAgIyBTYXZlIG1hbmlmZXN0b3MNCiAgZm9yIChpIGluIDE6bGVuZ3RoKG15X2NvcnB1cykpIHsNCiAgICBwYXJ0eV9uYW1lIDwtIG1ldGEobXlfY29ycHVzW1tpXV0pJHBhcnR5DQogICAgcGFydHlfY291bnQgPC0gc3VtKHN1YnN0cihwYXJ0eV9uYW1lcywgMSwgbmNoYXIocGFydHlfbmFtZSkpID09IHBhcnR5X25hbWUpDQogICAgZmlsZV9uYW1lIDwtIGlmZWxzZShwYXJ0eV9jb3VudCA+IDEsIHBhc3RlMChwYXJ0eV9uYW1lLCAiXyIsIHBhcnR5X2NvdW50KSwgcGFydHlfbmFtZSkNCiAgICB3cml0ZUxpbmVzKGNvbnRlbnQobXlfY29ycHVzW1tpXV0pLCBmaWxlLnBhdGgoIkF6ZXJiYWlqYW4iLCBwYXN0ZTAoZmlsZV9uYW1lLCAiLnR4dCIpKSkNCiAgfQ0KICBjYXQoIk1hbmlmZXN0b3MgZm9yIEF6ZXJiYWlqYW4gaGF2ZSBiZWVuIHNhdmVkLlxuIikNCn0gZWxzZSB7DQogIGNhdCgiTm8gbWFuaWZlc3RvcyBmb3VuZCBmb3IgQXplcmJhaWphbiBpbiAyMDE1LlxuIikNCn0NCg0KYGBgDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCmBgYHtyfQ0KZm9yKGkgaW4gMTpucm93KEF6ZXJiYWlqYW5uX21hbmlmZXN0b3MpKSB7DQogICMgRmV0Y2ggbWFuaWZlc3RvIHRleHQNCiAgbWFuaWZlc3RvX2RhdGEgPC0gbXBfY29ycHVzKEF6ZXJiYWlqYW5uX21hbmlmZXN0b3MkcGFydHlbaV0pDQogIA0KICAjIENoZWNrIGlmIHRoZSB0ZXh0IGlzIGRpcmVjdGx5IGFjY2Vzc2libGUgYW5kIGlzIGEgY2hhcmFjdGVyOyBhZGp1c3QgYmFzZWQgb24gdGhlIGFjdHVhbCBkYXRhIHN0cnVjdHVyZQ0KICBpZihpcy5jaGFyYWN0ZXIobWFuaWZlc3RvX2RhdGEkdGV4dCkpIHsNCiAgICBtYW5pZmVzdG9fdGV4dCA8LSBtYW5pZmVzdG9fZGF0YSR0ZXh0DQogIH0gZWxzZSB7DQogICAgIyBJZiB0aGUgdGV4dCBpcyBub3QgZGlyZWN0bHkgYSBjaGFyYWN0ZXIgdmVjdG9yLCBhdHRlbXB0IGNvbnZlcnNpb24NCiAgICBtYW5pZmVzdG9fdGV4dCA8LSBhcy5jaGFyYWN0ZXIobWFuaWZlc3RvX2RhdGEkdGV4dCkgIyBBZGp1c3QgYXMgbmVjZXNzYXJ5DQogIH0NCiAgDQogICMgRGVmaW5lIGZpbGUgbmFtZSwgcmVtb3Zpbmcgc3BhY2VzIGZyb20gcGFydHkgbmFtZXMgYW5kIGRhc2hlcyBmcm9tIGRhdGVzIGZvciB0aGUgZmlsZW5hbWUNCiAgZmlsZV9uYW1lIDwtIHBhc3RlMCgiQXplcmJhaWphbl8iLCBnc3ViKCJbWzpzcGFjZTpdXSIsICIiLCBBemVyYmFpamFubl9tYW5pZmVzdG9zJHBhcnR5W2ldKSwgIl8iLCBnc3ViKCItIiwgIiIsIEF6ZXJiYWlqYW5uX21hbmlmZXN0b3MkZWRhdGVbaV0pLCAiLnR4dCIpDQogIA0KICAjIFdyaXRlIHRvIGZpbGUgaW4gdGhlIGN1cnJlbnQgd29ya2luZyBkaXJlY3RvcnkNCiAgd3JpdGVMaW5lcyhtYW5pZmVzdG9fdGV4dCwgZmlsZV9uYW1lKQ0KfQ0KDQpgYGANCg0KYGBge3J9DQptYW5pZmVzdG9zIDwtIG1wX2NvcnB1cyhwYXJ0eSA9PSA0MjMyMCkNCm1hbmlmZXN0b3MNCmBgYA0KDQoNCmBgYHtyfQ0KIyBBY2Nlc3NpbmcgdGhlIGNvcnB1cyBjb250ZW50DQp0ZXh0ID0gY29udGVudChtYW5pZmVzdG9zW1sxXV0pDQpgYGANCg0KTm93IHdlIHdhbnQgdG8gY2xlYW4gdGhlIGFib3ZlIGRhdGEgYSBiaXQ6DQoNCmBgYHtyfQ0KY2xlYW5fdGV4dCA8LSBmdW5jdGlvbih0ZXh0KSB7DQogICMgY292ZXJ0IHRvIEFTQ0lJIHdoaWNoIHdpbGwgcmVtb3ZlIGFjY2VudHMgYW5kIHJlbW92ZSBzcGVjaWFsIGNoYXJhY3RlcnMNCiAgdGV4dCA8LSBpY29udih0ZXh0LCBmcm9tID0gJ1VURi04JywgdG8gPSAnQVNDSUkvL1RSQU5TTElUJykNCiAgdGV4dCA8LSBnc3ViKCJbXmEtekEtWjAtOSBdIiwgIiIsIHRleHQpDQogICNtYWtlIGxvd2VyY2FzZQ0KICB0ZXh0IDwtIHRvbG93ZXIodGV4dCkNCiAgI3Rva2VuaXplIHdvcmRzDQogIHRva2VucyA8LSB1bmxpc3Qoc3Ryc3BsaXQodGV4dCwgIlxccysiKSkNCiAgcmV0dXJuICh0b2tlbnMpDQp9DQoNCnNhbXBsZV90ZXh0IDwtICJTbyBub3cgICEgdGhla2Jjamxud2NrbG4gZXdxYSBlY2puayB3am5kd3V5MzgzMjAyICEhIzJidW0iDQoNCiMgQ2xlYW4gdGhlIHRleHQNCmNsZWFuZWRfdGV4dCA8LSBjbGVhbl90ZXh0KG1hbmlmZXN0b3NbWzFdXSkNCg0KYGBgDQoNCkZ1bmN0aW9ucyB0byByZW1vdmUgc3RvcHdvcmRzIGFuZCBmb3IgZWFjaCBsYW5ndWFnZToNCg0KYGBge3J9DQojcmVtb3ZlIHN0b3B3b3JkcyBhbmQgc3RlbSB3b3JkcyBlbmdsaXNoDQpmaWx0ZXJlZF90b2tlbnNfZGUgPC0gZnVuY3Rpb24odG9rZW5pemVkVGV4dCkgew0KICBmaWx0ZXJlZF90b2tlbnMgPC0gcmVtb3ZlV29yZHModG9rZW5pemVkVGV4dCwgc3RvcHdvcmRzKCJlbiIpKQ0KICBmaWx0ZXJlZF90b2tlbnMgPC0gY2xlYW5lZF90ZXh0X3AyW2NsZWFuZWRfdGV4dF9wMiAhPSAiIl0NCiAgc3RlbW1lZF93b3JkcyA8LSBzdGVtX3dvcmRzKGZpbHRlcmVkX3Rva2VucywgbGFuZ3VhZ2UgPSAiZW5nbGlzaCIpDQogIHJldHVybiAoc3RlbW1lZF93b3JkcykNCn0NCiNyZW1vdmUgc3RvcHdvcmRzIGFuZCBzdGVtIHdvcmRzIGdlcm1hbg0KZmlsdGVyZWRfdG9rZW5zX2RlIDwtIGZ1bmN0aW9uKHRva2VuaXplZFRleHQpIHsNCiAgZmlsdGVyZWRfdG9rZW5zIDwtIHJlbW92ZVdvcmRzKHRva2VuaXplZFRleHQsIHN0b3B3b3JkcygiZGUiKSkNCiAgZmlsdGVyZWRfdG9rZW5zIDwtIGZpbHRlcmVkX3Rva2Vuc1tmaWx0ZXJlZF90b2tlbnMgIT0gIiJdDQogIHN0ZW1tZWRfd29yZHMgPC0gc3RlbV93b3JkcyhmaWx0ZXJlZF90b2tlbnMsIGxhbmd1YWdlID0gImdlcm1hbiIpDQogIHJldHVybiAoc3RlbW1lZF93b3JkcykNCn0NCmBgYA0KDQpOb3cgYXBwbHkgc3RvcHdvcmQgZmlsdGVyczoNCg0KYGBge3J9DQp0ZXh0X2RhdGEgPSBjKHRleHQpDQpkZiA8LSBkYXRhLmZyYW1lKHRleHQ9dGV4dF9kYXRhKQ0KDQpzZW50aW1lbnRfc2NvcmVzIDwtIGRmICU+JQ0KICB1bm5lc3RfdG9rZW5zKHdvcmQsIHRleHQpICU+JQ0KICBpbm5lcl9qb2luKGdldF9zZW50aW1lbnRzKCJiaW5nIiksIGJ5ID0gIndvcmQiKQ0KYGBgDQpgYGB7cn0NCnNlbnRpbWVudF9zY29yZXMNCmBgYA0KDQpgYGB7cn0NCnNlbnRpbWVudF9zdW1tYXJ5IDwtIHNlbnRpbWVudF9zY29yZXMgJT4lDQogIGNvdW50KHNlbnRpbWVudCkgJT4lDQogIHNwcmVhZChzZW50aW1lbnQsIG4sIGZpbGwgPSAwKSAlPiUNCiAgbXV0YXRlKHNlbnRpbWVudF9zY29yZSA9IHBvc2l0aXZlIC0gbmVnYXRpdmUpDQoNCnByaW50KHNlbnRpbWVudF9zdW1tYXJ5KQ0KDQpgYGANCg0KYGBge30NCmBgYA0KDQpgYGB7cn0NCiNmdW5jdGlvbiB0byBjbGVhbiBlYWNoIG1hbmlmZXN0bw0KZm9yKGkgaW4gMTpsZW5ndGgobWFuaWZlc3RvcykpIHsNCiAgbWFuaWZlc3Rvc19jb250ZW50W1tpXV0gPC0gY29udGVudChtYW5pZmVzdG9zW1tpXV0pDQp9DQpgYGANCg0KYGBge3J9DQptYWluX2RhdGFzZXQgPC0gbXBfbWFpbmRhdGFzZXQoKQ0KDQojIEZpbHRlciBmb3IgQXplcmJhaWphbm4gcGFydGllcw0KQXplcmJhaWphbm5fcGFydGllcyA8LSBzdWJzZXQobWFpbl9kYXRhc2V0LCBjb3VudHJ5bmFtZSA9PSAiQXplcmJhaWphbiIpDQoNCiMgRXh0cmFjdCBwYXJ0eSBJRHMNCkF6ZXJiYWlqYW5uX3BhcnR5X2lkcyA8LSBBemVyYmFpamFubl9wYXJ0aWVzJHBhcnR5DQoNCiMgVmlldyB0aGUgcGFydHkgSURzDQpwcmludChBemVyYmFpamFubl9wYXJ0eV9pZHMpDQpgYGANCg0KYGBge3J9DQptcF9hdmFpbGFiaWxpdHkocGFydHk9PTQyMzIwKQ0KDQpgYGANCg0KYGBge3J9DQptcF92aWV3X29yaWdpbmFscyhwYXJ0eSA9PSA0MjMyMCwgbWF4biA9IDIwKQ0KYGBgDQoNCkFkZCBhIG5ldyBjaHVuayBieSBjbGlja2luZyB0aGUgKkluc2VydCBDaHVuayogYnV0dG9uIG9uIHRoZSB0b29sYmFyIG9yIGJ5IHByZXNzaW5nICpDdHJsK0FsdCtJKi4NCg0KV2hlbiB5b3Ugc2F2ZSB0aGUgbm90ZWJvb2ssIGFuIEhUTUwgZmlsZSBjb250YWluaW5nIHRoZSBjb2RlIGFuZCBvdXRwdXQgd2lsbCBiZSBzYXZlZCBhbG9uZ3NpZGUgaXQgKGNsaWNrIHRoZSAqUHJldmlldyogYnV0dG9uIG9yIHByZXNzICpDdHJsK1NoaWZ0K0sqIHRvIHByZXZpZXcgdGhlIEhUTUwgZmlsZSkuDQoNClRoZSBwcmV2aWV3IHNob3dzIHlvdSBhIHJlbmRlcmVkIEhUTUwgY29weSBvZiB0aGUgY29udGVudHMgb2YgdGhlIGVkaXRvci4gQ29uc2VxdWVudGx5LCB1bmxpa2UgKktuaXQqLCAqUHJldmlldyogZG9lcyBub3QgcnVuIGFueSBSIGNvZGUgY2h1bmtzLiBJbnN0ZWFkLCB0aGUgb3V0cHV0IG9mIHRoZSBjaHVuayB3aGVuIGl0IHdhcyBsYXN0IHJ1biBpbiB0aGUgZWRpdG9yIGlzIGRpc3BsYXllZC4NCg0KDQpgYGB7cn0NCm1wX3NldGFwaWtleSgibWFuaWZlc3RvX2FwaWtleS50eHQiKQ0KbXlfY29ycHVzIDwtIG1wX2NvcnB1cyhwYXJ0eSA9PSA4ODMyMCkNCmdldF9hbmRfc2F2ZV9tYW5pZmVzdG8gPC0gZnVuY3Rpb24ocGFydHksIGRhdGUpIHsNCiAgIyBTZXQgQVBJIGtleQ0KICBtcF9zZXRhcGlrZXkoIm1hbmlmZXN0b19hcGlrZXkudHh0IikgIA0KICANCiAgIyBEb3dubG9hZCBkb2N1bWVudCBmb3Igc3BlY2lmaWVkIGNvdW50cnksIHBhcnR5LCBhbmQgZGF0ZQ0KICBteV9tYW5pZmVzdG8gPC0gbXBfY29ycHVzKHBhcnR5bmFtZSA9PSBwYXJ0eSAmIGVkYXRlID09IGFzLkRhdGUoZGF0ZSkpDQogIA0KICAjIENoZWNrIGlmIG1hbmlmZXN0byBleGlzdHMNCiAgaWYgKGxlbmd0aChteV9tYW5pZmVzdG8pID4gMCkgew0KICAgICMgU2F2ZSBtYW5pZmVzdG8NCiAgICBmaWxlX25hbWUgPC0gcGFzdGUwKCJfIiwgcGFydHksICJfIiwgZGF0ZSwgIi50eHQiKQ0KICAgIHdyaXRlTGluZXMoY29udGVudChteV9tYW5pZmVzdG9bWzFdXSksIGZpbGVfbmFtZSkNCiAgICBjYXQoIk1hbmlmZXN0byBmb3IiLCAid2l0aCBwYXJ0eSIsIHBhcnR5LCAib24iLCBkYXRlLCAiaGFzIGJlZW4gc2F2ZWQuXG4iKQ0KICB9IGVsc2Ugew0KICAgIGNhdCgiTm8gbWFuaWZlc3RvIGZvdW5kIGZvciIsICJ3aXRoIHBhcnR5IiwgcGFydHksICJvbiIsIGRhdGUsICIuXG4iKQ0KICB9DQp9DQpgYGANCg0K</div>
 
 
 

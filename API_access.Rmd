@@ -21,14 +21,14 @@ library(tidyr)
 
 ```{r}
 mp_setapikey("manifesto_apikey.txt")
-my_corpus <- mp_corpus(countryname == "Austria" & edate > as.Date("2015-01-01"))
+my_corpus <- mp_corpus(countryname == "Azerbaijan" & edate > as.Date("2015-01-01"))
 my_corpus
 ```
 
 Try getting the Corpus of one party and one manifesto
 ```{r}
 mp_setapikey("manifesto_apikey.txt")
-my_corpus <- mp_corpus(countryname == "Greece" & edate >= as.Date("2015-01-01") & edate < as.Date("2016-01-01"))
+my_corpus <- mp_corpus(countryname == "Azerbaijan" & edate >= as.Date("2015-01-01") & edate < as.Date("2016-01-01"))
 my_corpus
 ```
 ```{r}
@@ -42,46 +42,11 @@ for (i in 1:length(my_corpus)) {
 
 
 ```
-```{r}
-# Load manifestoR package
-library(manifestoR)
 
-# Set API key
-mp_setapikey("manifesto_apikey.txt")  # Replace "manifesto_apikey.txt" with your actual API key file name
 
-# Download documents for Greece in 2015
-my_corpus <- mp_corpus(countryname == "Greece" & edate >= as.Date("2015-01-01") & edate < as.Date("2016-01-01"))
 
-# Check if any manifestos exist for Greece
-if (length(my_corpus) > 0) {
-  # Create directory for Greece if it doesn't exist
-  dir.create("Greece", showWarnings = FALSE, recursive = TRUE)
-  
-  # Iterate over each document in the corpus
-  for (i in 1:length(my_corpus)) {
-    # Extract party name from the metadata
-    party_name <- meta(my_corpus[[i]])$party
-    
-    # Count the occurrences of the party name in previously processed documents
-    party_count <- sum(substr(party_names, 1, nchar(party_name)) == party_name)
-    
-    # Generate file name
-    if (party_count > 1) {
-      file_name <- paste0(party_name, "_", party_count)
-    } else {
-      file_name <- party_name
-    }
-    
-    # Write manifesto content to file
-    writeLines(content(my_corpus[[i]]), file.path("Greece", paste0(file_name, ".txt")))
-  }
-  
-  cat("Manifestos for Greece have been saved.\n")
-} else {
-  cat("No manifestos found for Greece in 2015.\n")
-}
 
-```
+This below is the working code to get moanifestos and add them to a directory with the party ID
 
 ```{r}
 # Load manifestoR package
@@ -90,24 +55,24 @@ library(manifestoR)
 # Set API key
 mp_setapikey("manifesto_apikey.txt")  
 
-# Download documents for Greece in 2015
-my_corpus <- mp_corpus(countryname == "Greece" & edate >= as.Date("2015-01-01") & edate < as.Date("2016-01-01"))
+# Download documents for Azerbaijan in 2015
+my_corpus <- mp_corpus(countryname == "Azerbaijan" & edate >= as.Date("2015-01-01") & edate < as.Date("2016-01-01"))
 
-# Check if any manifestos exist for Greece
+# Check if any manifestos exist for Azerbaijan
 if (length(my_corpus) > 0) {
-  # Create directory for Greece if it doesn't exist
-  if (!dir.exists("Greece")) dir.create("Greece")
+  # Create directory for Azerbaijan if it doesn't exist
+  if (!dir.exists("Azerbaijan")) dir.create("Azerbaijan")
   
   # Save manifestos
   for (i in 1:length(my_corpus)) {
     party_name <- meta(my_corpus[[i]])$party
     party_count <- sum(substr(party_names, 1, nchar(party_name)) == party_name)
     file_name <- ifelse(party_count > 1, paste0(party_name, "_", party_count), party_name)
-    writeLines(content(my_corpus[[i]]), file.path("Greece", paste0(file_name, ".txt")))
+    writeLines(content(my_corpus[[i]]), file.path("Azerbaijan", paste0(file_name, ".txt")))
   }
-  cat("Manifestos for Greece have been saved.\n")
+  cat("Manifestos for Azerbaijan have been saved.\n")
 } else {
-  cat("No manifestos found for Greece in 2015.\n")
+  cat("No manifestos found for Azerbaijan in 2015.\n")
 }
 
 ```
@@ -115,71 +80,28 @@ if (length(my_corpus) > 0) {
 
 
 
-```{r}
-# Load manifestoR package
-library(manifestoR)
 
-# Set API key
-mp_setapikey("manifesto_apikey.txt")  # Replace "manifesto_apikey.txt" with your actual API key file name
 
-# Define function to save manifestos for a given country
-save_manifestos <- function(country) {
-  # Download documents for the specified country in 2015
-  country_corpus <- mp_corpus(countryname == country & edate >= as.Date("2015-01-01") & edate <= as.Date("2015-12-31"))
-  
-  # Check if any manifestos exist for the country
-  if (length(country_corpus) > 0) {
-    cat("Manifestos found for", country, "\n")
-    
-    # Create directory for the country if it doesn't exist
-    dir.create(country, showWarnings = TRUE, recursive = TRUE)
-    
-    # Check if directory was created
-    if (file.exists(country)) {
-      cat("Directory created for", country, "\n")
-    } else {
-      cat("Failed to create directory for", country, "\n")
-    }
-    
-    # Iterate over each document in the corpus
-    for (i in 1:length(country_corpus)) {
-      # Extract party name from the metadata
-      party_name <- meta(country_corpus[[i]])$party
-      
-      # Count the occurrences of the party name in previously processed documents
-      party_count <- sum(substr(party_names, 1, nchar(party_name)) == party_name)
-      
-      # Generate file name
-      if (party_count > 1) {
-        file_name <- paste0(party_name, "_", party_count)
-      } else {
-        file_name <- party_name
-      }
-      
-      # Write manifesto content to file
-      writeLines(content(country_corpus[[i]]), file.path(country, paste0(file_name, ".txt")))
-    }
-    
-    cat("Manifestos for", country, "have been saved.\n")
-  } else {
-    cat("No manifestos found for", country, "in 2015.\n")
-  }
-}
 
-# List of Balkan countries and Turkey
-countries <- c("Albania", "Bosnia and Herzegovina", "Bulgaria", "Croatia", "Kosovo", "Montenegro", "North Macedonia", "Romania", "Serbia", "Slovenia", "Turkey")
 
-# Loop through each country and save manifestos
-for (country in countries) {
-  save_manifestos(country)
-}
 
-```
+
+
+
+
+
+
+
+
+
+
+
+
 
 ```{r}
-for(i in 1:nrow(austrian_manifestos)) {
+for(i in 1:nrow(Azerbaijann_manifestos)) {
   # Fetch manifesto text
-  manifesto_data <- mp_corpus(austrian_manifestos$party[i])
+  manifesto_data <- mp_corpus(Azerbaijann_manifestos$party[i])
   
   # Check if the text is directly accessible and is a character; adjust based on the actual data structure
   if(is.character(manifesto_data$text)) {
@@ -190,7 +112,7 @@ for(i in 1:nrow(austrian_manifestos)) {
   }
   
   # Define file name, removing spaces from party names and dashes from dates for the filename
-  file_name <- paste0("Austria_", gsub("[[:space:]]", "", austrian_manifestos$party[i]), "_", gsub("-", "", austrian_manifestos$edate[i]), ".txt")
+  file_name <- paste0("Azerbaijan_", gsub("[[:space:]]", "", Azerbaijann_manifestos$party[i]), "_", gsub("-", "", Azerbaijann_manifestos$edate[i]), ".txt")
   
   # Write to file in the current working directory
   writeLines(manifesto_text, file_name)
@@ -286,14 +208,14 @@ for(i in 1:length(manifestos)) {
 ```{r}
 main_dataset <- mp_maindataset()
 
-# Filter for Austrian parties
-austrian_parties <- subset(main_dataset, countryname == "Austria")
+# Filter for Azerbaijann parties
+Azerbaijann_parties <- subset(main_dataset, countryname == "Azerbaijan")
 
 # Extract party IDs
-austrian_party_ids <- austrian_parties$party
+Azerbaijann_party_ids <- Azerbaijann_parties$party
 
 # View the party IDs
-print(austrian_party_ids)
+print(Azerbaijann_party_ids)
 ```
 
 ```{r}
@@ -310,3 +232,27 @@ Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by press
 When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Ctrl+Shift+K* to preview the HTML file).
 
 The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
+
+
+```{r}
+mp_setapikey("manifesto_apikey.txt")
+my_corpus <- mp_corpus(party == 88320)
+get_and_save_manifesto <- function(party, date) {
+  # Set API key
+  mp_setapikey("manifesto_apikey.txt")  
+  
+  # Download document for specified country, party, and date
+  my_manifesto <- mp_corpus(partyname == party & edate == as.Date(date))
+  
+  # Check if manifesto exists
+  if (length(my_manifesto) > 0) {
+    # Save manifesto
+    file_name <- paste0("_", party, "_", date, ".txt")
+    writeLines(content(my_manifesto[[1]]), file_name)
+    cat("Manifesto for", "with party", party, "on", date, "has been saved.\n")
+  } else {
+    cat("No manifesto found for", "with party", party, "on", date, ".\n")
+  }
+}
+```
+
