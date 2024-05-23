@@ -235,14 +235,12 @@ The preview shows you a rendered HTML copy of the contents of the editor. Conseq
 
 
 ```{r}
-mp_setapikey("manifesto_apikey.txt")
-my_corpus <- mp_corpus(party == 88320)
 get_and_save_manifesto <- function(party, date) {
   # Set API key
   mp_setapikey("manifesto_apikey.txt")  
   
   # Download document for specified country, party, and date
-  my_manifesto <- mp_corpus(partyname == party & edate == as.Date(date))
+  my_manifesto <- mp_corpus(party == party & edate == as.Date(date))[[1]]
   
   # Check if manifesto exists
   if (length(my_manifesto) > 0) {
@@ -255,4 +253,27 @@ get_and_save_manifesto <- function(party, date) {
   }
 }
 ```
+
+```{r}
+mp_corpus(party == 95955)
+```
+
+```{r}
+save_manifesto <- function(start_date, party_code) {
+  # Set API key
+  mp_setapikey("manifesto_apikey.txt")
+  
+  # Retrieve manifesto data
+  my_manifestos <- mp_corpus(edate == as.Date(start_date) & party == party_code)[[1]]
+  file_name <- paste0(party_code, ".txt")
+  
+  # Save manifesto
+  writeLines(content(my_manifestos), file_name)
+  
+  cat("Manifesto for party", party_code, "on", start_date, "has been saved.\n")
+}
+
+save_manifesto("2020-06-21","95955")
+```
+
 

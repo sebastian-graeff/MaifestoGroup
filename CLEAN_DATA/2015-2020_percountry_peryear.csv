@@ -1,4 +1,4 @@
-,countryname,year,rile,leading,stance_positivity_score,gini Coefficient
+,countryname,year,rile,stance_positivity_score,gini Coefficient,leading
 0,Sweden,1970,-10.283625,58.763999999999996,0.2997419,left
 8,Norway,1970,-15.352666666666668,60.142444444444436,0.2698733,left
 17,Denmark,1970,-6.543842105263158,50.18000000000001,0.2793860389473684,left
